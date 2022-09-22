@@ -1,0 +1,196 @@
+  <div class="grid p-fluid">
+    <div class="col-12">
+        <div class="card">
+            <div  style="display: flex; justify-content:space-between;">
+                <h5>LES MODELES DISPONIBLE </h5>
+                <button pButton pRipple label="Ajouter" style="width: 10%;" icon="pi pi-plus" class=" mr-1" (click)="openNew()" ></button>
+
+            </div>
+            <p-carousel [value]="products" [numVisible]="3" [numScroll]="3" [circular]="false" [responsiveOptions]="carouselResponsiveOptions">
+                <ng-template let-product pTemplate="item">
+                        <div class="border-round m-1 text-center p-2" style="border: 1px solid var(--surface-d)">
+                            <div class="my-4">
+                                <pdf-viewer [src]="pdfSrc"
+                                [render-text]="true"
+                                [original-size]="false"
+                                style="width: 100%; height: 400px"
+                                    ></pdf-viewer>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">{{product.name}}</h5>
+                                <div class="my-7">
+                                    <div></div>
+                                    <button pButton pRipple icon="pi pi-trash" class="mr-2 p-button-rounded p-button-danger"></button>
+                                    
+                                    <button pButton pRipple icon="pi bi bi-pencil-square" (click)="openNew()" class="mr-2 p-button-rounded p-button-success"></button>
+                                    <button pButton pRipple icon="pi pi-download" class="p-button-rounded p-button-info"></button>
+                                    <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-help"></button>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                </ng-template>
+            </p-carousel>
+        </div>
+    </div>
+  </div>      
+            
+    <p-dialog [(visible)]="display" [style]="{width: '70%', height: '98%'}" header="créer votre propre modéle" [modal]="true" class="p-fluid">
+        <ng-template pTemplate="content">
+            <div class="formgrid grid">
+                <div class="field col">
+                    <label for="name">Nom du modèle  </label>
+                    <input type="text" pInputText id="name" [(ngModel)]="modele.nom_modelep" required autofocus
+                        placeholder="Nom du modèle" [ngClass]="{'ng-invalid ng-dirty' : submitted && !modele.nom_modelep}" />
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !modele.nom_modelep">Nom required.</small>
+                </div>
+                <div class="field col">
+                        <label for="name"> Description </label>
+                        <textarea id="adress1" pInputTextarea placeholder="Description...."  required rows="3" cols="20" [(ngModel)]="modele.description"></textarea>
+                </div>
+            </div> 
+            <div class="formgrid grid">
+                <div class="field col-4">
+                    <label for="status">Desine Pour </label>
+                    <p-dropdown id="desinePour" [options]="statuses" optionLabel="desinePour" [(ngModel)]="modele.desinePour"
+                        placeholder="Select ">
+            
+                        <ng-template let-status pTemplate="status">
+                            <span [class]="'product-badge status-' + status.desinePour">{{status.desinePour}}</span>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+                <div class="field col-4">
+                    <label for="dropdown">Casse </label>
+                    <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="writhing" [(ngModel)]="modele.casse" optionLabel="casse"></p-dropdown>
+                </div>
+                <div class="field col-4">
+                    <label for="style Bordure">style Bordure </label>
+                    <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="true" [options]="styles" [(ngModel)]="modele.pl_txt_corps" optionLabel="style"></p-dropdown>
+                </div>
+                
+             </div>   
+                
+                <div class="formgrid grid">
+                    <div class="field col-2">
+                        <label for="dropdown">Taille titres corps</label>
+                        <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="tailles" [(ngModel)]="modele.taill_titre_corps" optionLabel="taille"></p-dropdown>
+                    </div>
+                    <div class="field col-2">
+                        <label for="dropdown">Taille texte corps </label>
+                        <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="tailles" [(ngModel)]="modele.taill_txt_corps" optionLabel="taille"></p-dropdown>
+                    </div>
+                    <div class="field col-2">
+                        <label for="dropdown">Taille titres entête </label>
+                        <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="tailles" [(ngModel)]="modele.taill_titre_entt" optionLabel="taille"></p-dropdown>
+                    </div>
+                    <div class="field col-2">
+                        <label for="dropdown">Taille texte entête </label>
+                        <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="tailles" [(ngModel)]="modele.taill_txt_entt" optionLabel="taille"></p-dropdown>
+                    </div>
+                    <div class="field col-2">
+                        <label for="dropdown">Taille bas </label>
+                        <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="tailles" [(ngModel)]="modele.taill_bas" optionLabel="taille"></p-dropdown>
+                    </div>
+                    <div class="field col-2">
+                        <label for="dropdown">Taille Totale </label>
+                        <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="tailles" [(ngModel)]="modele.taill_total" optionLabel="taille"></p-dropdown>
+                    </div>
+                </div>    
+                <div class="formgrid grid">
+                    <div class="field col-2">
+                        <label for="dropdown">Police titres corps</label>
+                        <!-- <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="polices" [(ngModel)]="modele.pl_titre_corps" optionLabel="police"></p-dropdown> -->
+
+                        <select class="form-select" aria-label="Default select example" [(ngModel)]="modele.pl_titre_corps"   >
+                            <option value="Arial, sans-seri" id="A1" >Arial, sans-serif</option>
+                            <option value="Courier" id="A2">Courier</option>
+                            <option value="Courier" id="A3">Courier</option>
+                            <option value="Impact" id="A4">Impact</option>
+                            <option value="Marker Felt" id="A5">Marker Felt </option>
+                            <option value="Trebuchet MS" id="A6">Trebuchet MS </option>
+                            <option value="Verdana" id="A7">Verdana </option>
+                            <option value="Garamond" id="A8">Garamond </option>
+                            <option value="Georgia" id="A9">Georgia </option>
+                            <option value="Times New Roman" id="A10">Times New Roman </option>
+                            <option value="monospace" id="A11"> monospace</option>
+                            <option value="Brush Script MT" id="A12">Brush Script MT (cursive)</option>
+                          </select>
+                    </div>
+                    <div class="field col-2">
+                        <label for="dropdown">Police texte corps </label>
+                        <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="polices" [(ngModel)]="modele.pl_txt_corps" optionLabel="police"></p-dropdown>
+                    </div>
+                    <div class="field col-2">
+                        <label for="dropdown">Police titres entête </label>
+                        <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="polices" [(ngModel)]="modele.pl_titre_entt" optionLabel="police"></p-dropdown>
+                    </div>
+                    <div class="field col-2">
+                        <label for="dropdown">Police texte entête </label>
+                        <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="polices" [(ngModel)]="modele.pl_txt_entt" optionLabel="police"></p-dropdown>
+                    </div>
+                    <div class="field col-2">
+                        <label for="dropdown">Police bas </label>
+                        <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="polices" [(ngModel)]="modele.pl_bas" optionLabel="police"></p-dropdown>
+                    </div>
+                    <div class="field col-2">
+                        <label for="dropdown">Police Totale </label>
+                        <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="polices" [(ngModel)]="modele.pl_total" optionLabel="police"></p-dropdown>
+                    </div>
+                </div> 
+                <div class="formgrid grid">
+                    <div class="field col-2">
+                        <label for="Couleur des titres corps">Couleur titres corps </label>
+                        <p-colorPicker id="Couleur texte corps" [(ngModel)]="modele.cl_titre_corps"></p-colorPicker>
+                    </div>
+                    <div class="field col-2">
+                        <label for="Couleur texte corps">Couleur texte corps</label>
+                        <p-colorPicker id="Couleur texte corps"  [(ngModel)]="modele.cl_txt_corps"></p-colorPicker>
+                    </div>
+                    <div class="field col-2">
+                        <label for="Couleur des titres entête">Couleur titres entête</label>
+                        <p-colorPicker id="Couleur des titres entête"  [(ngModel)]="modele.cl_titre_entt"></p-colorPicker>
+                    </div>
+                    <div class="field col-2">
+                        <label for="CouleurTexteEntête">Couleur texte entête</label>
+                        <p-colorPicker id="CouleurTexteEntête"  [(ngModel)]="modele.cl_txt_entt"></p-colorPicker>
+                    </div>
+                    <div class="field col-2">
+                        <label for="coleurBas">Couleur  pour bas </label>
+                        <p-colorPicker id="coleurBas" [(ngModel)]="modele.cl_bas" ></p-colorPicker>
+                    </div>    
+                    <div class="field col-2">
+                        <label for="coleur Totale" >coleur  pour Totale</label>
+                        <p-colorPicker id="coleur Totale" [(ngModel)]="modele.cl_total"  ></p-colorPicker>
+                    </div>
+                </div>  
+                <div class="formgrid grid">
+                    <div class="field col-2">
+                        <label for="Coleur Bordure" >Coleur  Bordure</label>
+                        <p-colorPicker id="Coleur Bordure" [(ngModel)]="modele.cl_bordure"  ></p-colorPicker>
+                    </div>
+                    <div class="field col-2">
+                        <label for="Coleur templatee" >Coleur  template</label>
+                        <p-colorPicker id="Coleur template" [(ngModel)]="modele.cl_template" ></p-colorPicker>
+                    </div>
+                    
+                    <div class="field col-8">
+                        <label for="name"> Message Pied de page</label>
+                        <textarea id="pied" pInputTextarea placeholder=" Pied de page...."  required rows="3" cols="20" [(ngModel)]="modele.pied"></textarea>
+                    </div>
+                </div>   
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Sauvegarde" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+            <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            
+        </ng-template>
+    </p-dialog>    
+       
+       
+
+
+  
+      
+
+    
