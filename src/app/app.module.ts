@@ -34,6 +34,8 @@ import { ClientsComponent } from './demo/components/clients&fornisseurs/clients/
 import { FournisseursComponent } from './demo/components/clients&fornisseurs/fournisseurs/fournisseurs.component';
 import { ProduitsComponent } from './demo/components/produits&services/produits/produits.component';
 import { ServicesComponent } from './demo/components/produits&services/services/services.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth/auth.interceptor';
 
 
 @NgModule({
@@ -50,10 +52,10 @@ import { ServicesComponent } from './demo/components/produits&services/services/
         ButtonModule,
         ImageModule,
         GalleriaModule,
-        BrowserModule, 
-              BrowserAnimationsModule, 
-            DialogModule, 
-            ButtonModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        DialogModule,
+        ButtonModule,
         CarouselModule,
         FormsModule,
         InputTextModule,
@@ -61,12 +63,14 @@ import { ServicesComponent } from './demo/components/produits&services/services/
         DropdownModule,
         ColorPickerModule,
         ConfirmDialogModule,
-        ConfirmPopupModule
+        ConfirmPopupModule,
+        HttpClientModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService
+        PhotoService, ProductService,
+        {provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true},
     ],
     bootstrap: [AppComponent]
 })

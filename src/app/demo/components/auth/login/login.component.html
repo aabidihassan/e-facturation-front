@@ -16,11 +16,11 @@
 
                 <div class="w-full md:w-10 mx-auto">
                     <label for="email1" class="block text-900 text-xl font-medium mb-2">Nom d'Utilisateur</label>
-                    <input id="email1" type="text" placeholder="Email address" pInputText class="w-full mb-3"
+                    <input id="email1" type="text" placeholder="Email address" pInputText class="w-full mb-3" [(ngModel)]="user.username"
                         style="padding:1rem;">
 
                     <label for="password1" class="block text-900 font-medium text-xl mb-2">Mot de Passe</label>
-                    <p-password id="password1" [(ngModel)]="password" placeholder="Password" [toggleMask]="true"
+                    <p-password id="password1" [(ngModel)]="user.password" placeholder="Password" [toggleMask]="true"
                         styleClass="w-full mb-3"></p-password>
 
                     <div class="flex align-items-center justify-content-between mb-5">
@@ -34,7 +34,7 @@
                         </label>
 
                     </div>
-                    <button pButton pRipple label="Se connecter" class="w-full p-3 text-xl"></button>
+                    <button pButton pRipple (click)="login()" label="Se connecter" class="w-full p-3 text-xl"></button>
                 </div>
             </div>
         </div>
@@ -75,33 +75,15 @@
             <div class="field col-4">
 
                 <label for="status">Pays</label>
-                <p-dropdown [options]="countries" defaultLabel="Select pays" [(ngModel)]="selectedMulti"
-                    optionLabel="name" class="multiselect-custom">
-                    <ng-template let-value pTemplate="selectedItems">
-                        <div class="country-item country-item-value" *ngFor="let option of selectedMulti">
-                            <img src="assets/demo/images/flag/flag_placeholder.png"
-                                [class]="'flag flag-' + option.code.toLowerCase()" />
-                            <div>{{option.name}}</div>
-                        </div>
-                        <div *ngIf="!selectedMulti || selectedMulti.length === 0" class="country-placeholder">
-                            Select Pays
-                        </div>
-                    </ng-template>
-                    <ng-template let-country pTemplate="item">
-                        <div class="country-item">
-                            <img src="assets/demo/images/flag/flag_placeholder.png"
-                                [class]="'flag flag-' + country.code.toLowerCase()" />
-                            <div>{{country.name}}</div>
-                        </div>
-                    </ng-template>
-                </p-dropdown>
+                <input type="text" pInputText id="paye" [(ngModel)]="user.entreprise.pays" required autofocus
+                    [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.entreprise.pays}" />
             </div>
 
             <div class="field col-4">
                 <label for="status">Categoriers</label>
                 <p-dropdown id="categorie" [options]="statuses" optionLabel="nom_categorie" [(ngModel)]="user.entreprise.categorie"
                     placeholder="Select a Status">
-        
+
                     <ng-template let-status pTemplate="status">
                         <span [class]="'product-badge status-' + status.nom_categorie">{{status.nom_categorie}}</span>
                     </ng-template>
@@ -127,7 +109,7 @@
                 <label for="name">Code Postale <i class=" pi pi-fw bi bi-mailbox2" aria-hidden="true"></i> </label>
                 <p-inputNumber id="code_postal" placeholder="ZIP Code"[(ngModel)]="user.entreprise.code_postal" ></p-inputNumber>
             </div>
-        
+
         </div>
 
         <div class="formgrid grid">
@@ -147,27 +129,27 @@
         </div>
 
         <div class="formgrid grid">
-           
+
             <div class="field col-4">
                 <label for="name"> TAXE   </label>
                 <div class="p-inputgroup">
-                    
+
                     <p-inputNumber id="code_postal" placeholder="20" [(ngModel)]="user.entreprise.taxe"></p-inputNumber>
                     <span class="p-inputgroup-addon">%</span>
-                    
+
                 </div>
             </div>
-            
+
         </div>
         <div class="formgrid grid">
             <div class="field col-5">
-                
+
             </div>
             <div class="field col-5">
                 <p-fileUpload mode="basic" accept="image/png, image/jpeg" [maxFileSize]="1000000" label="Import voter Logo" chooseLabel="Import voter Logo" class="mr-2 inline-block"></p-fileUpload>
             </div>
         </div>
-       
+
 
 
 
@@ -175,7 +157,7 @@
 
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="S'inscrire" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+        <button pButton pRipple label="S'inscrire" icon="pi pi-check" class="p-button-text" (click)="register()"></button>
     </ng-template>
 </p-dialog>
 

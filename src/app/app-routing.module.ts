@@ -7,6 +7,7 @@ import { ClientsComponent } from './demo/components/clients&fornisseurs/clients/
 import { FournisseursComponent } from './demo/components/clients&fornisseurs/fournisseurs/fournisseurs.component';
 import { ProduitsComponent } from './demo/components/produits&services/produits/produits.component';
 import { ServicesComponent } from './demo/components/produits&services/services/services.component';
+import { AuthGuard } from './guards/auth/auth.guard';
 
 
 @NgModule({
@@ -26,10 +27,10 @@ import { ServicesComponent } from './demo/components/produits&services/services/
                     { path: 'fournisseurs', component: FournisseursComponent },
                     { path: 'produits', component: ProduitsComponent },
                     { path: 'services', component: ServicesComponent }
-                ],
+                ],canActivate:[AuthGuard],
             },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
-            
+
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },
             { path: 'pages/notfound', component: NotfoundComponent },
             { path: '**', redirectTo: 'pages/notfound' },
