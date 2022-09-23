@@ -30,7 +30,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
-  declarations: [ModelefactureComponent],
+  declarations: [],
   imports: [
     CommonModule,
         MediaDemoRoutingModule,
@@ -47,14 +47,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         DropdownModule,
         AutoCompleteModule,FileUploadModule,
         CalendarModule,ChipsModule,InputMaskModule,InputNumberModule,CascadeSelectModule,MultiSelectModule,InputTextareaModule,
-        Dialog,
+
         AuthRoutingModule,
         FormlayoutRoutingModule,
-        BrowserModule, 
-              BrowserAnimationsModule, 
-            DialogModule, 
+        BrowserModule,
+              BrowserAnimationsModule,
+            DialogModule,
             ButtonModule
-    
+
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })

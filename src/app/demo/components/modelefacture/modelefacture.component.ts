@@ -5,6 +5,7 @@ import { Product } from '../../api/product';
 import { PhotoService } from '../../service/photo.service';
 import { ProductService } from '../../service/product.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { ModeleService } from 'src/app/services/modele/modele.service';
 
 @Component({
   selector: 'app-modelefacture',
@@ -25,45 +26,45 @@ export class ModelefactureComponent implements OnInit {
   modele !: Modele;
 
   statuses = [
-    { desinePour: 'Facture / Devis' },
-    { desinePour: 'Facture' },
-    { desinePour: 'Devis' }
+    { label: 'Facture / Devis', value : "Facture / Devis" },
+    { label: 'Facture', value : "Facture" },
+    { label: 'Devis', value : "Devis" }
   ];
 
   writhing = [
-    { casse: 'Majuscule' },
-    { casse: 'minuscule' }
+    { label: 'Majuscule', value : 'true' },
+    { label: 'minuscule', value: 'false' }
   ];
 
   tailles = [
-    { taille: '8' },
-    { taille: '9' },
-    { taille: '10' },
-    { taille: '11' },
-    { taille: '12' },
-    { taille: '13' },
-    { taille: '14' }
+    { label: '8', value : '8' },
+    { label: '9' , value : '9'},
+    { label: '10' , value : '10'},
+    { label: '11' , value : '11'},
+    { label: '12' , value : '12'},
+    { label: '13' , value : '13'},
+    { label: '14' , value : '14'}
   ];
 
   polices = [
-    { police: 'Arial, sans-serif' },
-    { police: 'Courier' },
-    { police: 'Impact' },
-    { police: 'Marker Felt' },
-    { police: 'Trebuchet MS' },
-    { police: 'Garamond' },
-    { police: 'Times New Roman' },
-    { police: 'monospace' },
-    { police: 'Georgia' }
+    { label: 'Arial, sans-serif', value: "Arial, sans-serif" },
+    { label: 'Courier', value: "Courier" },
+    { label: 'Impact' , value: "Impact"},
+    { label: 'Marker Felt' , value: "Marker Felt"},
+    { label: 'Trebuchet MS' , value: "Trebuchet MS"},
+    { label: 'Garamond' , value: "Garamond"},
+    { label: 'Times New Roman' , value: "Times New Roman"},
+    { label: 'monospace' , value: "monospace"},
+    { label: 'Georgia' , value: "Georgia"}
   ];
 
   styles = [
-    { style: 'none' },
-    { style: 'dotted' },
-    { style: 'inset' },
-    { style: 'dashed solid' },
-    { style: 'dashed double none' },
-    { style: 'dashed groove none dotted' },
+    { label: 'none', value: "none" },
+    { label: 'dotted' ,value: "dotted"},
+    { label: 'inset',value: "inset" },
+    { label: 'dashed solid' ,value: "dashed solid"},
+    { label: 'dashed double none',value: "dashed double none" },
+    { label: 'dashed groove none dotted' ,value: "dashed groove none dotted"},
   ];
 
 
@@ -90,7 +91,7 @@ export class ModelefactureComponent implements OnInit {
   private confirmationService: ConfirmationService = new ConfirmationService(); private messageService: MessageService = new MessageService();
 
 
-  constructor(private productService: ProductService, private photoService: PhotoService) { }
+  constructor(private productService: ProductService, private photoService: PhotoService, private modeleService : ModeleService) { }
 
   ngOnInit() {
 
@@ -109,14 +110,20 @@ export class ModelefactureComponent implements OnInit {
     this.product = {};
     this.submitted = false;
     this.display = true;
+    this.modele.cl_bas = "#000000"
   }
 
   hideDialog() {
     this.display = false;
     this.submitted = false;
   }
-  saveProduct() {
+  save() {
     this.submitted = true;
+    this.modeleService.save(this.modele).subscribe(data=>{
+        console.log(data)
+    },err=>{
+        alert("Erroooooooor")
+    })
   }
   confirm2(event: Event) {
     this.confirmationService.confirm({
