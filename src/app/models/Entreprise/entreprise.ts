@@ -1,4 +1,8 @@
 import { Categorie } from "../Categorie/categorie";
+import { Client } from "../Client/client";
+import { Fournisseur } from "../Fournisseur/fournisseur";
+import { Produit } from "../Produit/produit";
+import { Service } from "../Service/service";
 
 export class Entreprise {
     public id_entreprise !: number;
@@ -14,4 +18,8 @@ export class Entreprise {
     public logo !: string;
     public taxe !: string;
     public categorie : Categorie = new Categorie;
+    public produits !: Array<Produit>;
+    public services !: Array<Service>;
+    public clients !: Array<Client>;
+    public fournisseurs !: Array<Fournisseur>;
 }

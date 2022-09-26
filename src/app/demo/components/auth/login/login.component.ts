@@ -7,6 +7,7 @@ import { Entreprise } from 'src/app/models/Entreprise/entreprise';
 import { LoginService } from 'src/app/services/auth/login/login.service';
 import { Token } from 'src/app/models/auth/token/token';
 import { Router } from '@angular/router';
+import { ProfileService } from 'src/app/services/auth/Profile/profile.service';
 
 
 @Component({
@@ -58,7 +59,9 @@ export class LoginComponent implements OnInit{
 
     token : Token = new Token();
 
-    constructor(public layoutService: LayoutService, private router : Router ,private countryService: CountryService, private loginService : LoginService) { }
+    userAuth : Utilisateur = new Utilisateur();
+
+    constructor(public layoutService: LayoutService, private profileService : ProfileService ,private router : Router ,private countryService: CountryService, private loginService : LoginService) { }
 
     ngOnInit() {
 
@@ -96,6 +99,10 @@ export class LoginComponent implements OnInit{
         this.loginService.login(this.user).subscribe(data=>{
             this.token = data;
             localStorage.setItem("token", JSON.stringify(this.token))
+            this.profileService.profile().subscribe(data=>{
+                this.userAuth = data;
+                localStorage.setItem("user", JSON.stringify(this.userAuth));
+            })
             this.router.navigate(['/'])
         },err=>{
             alert("Le Nom d'utilisateur ou Mot de passe est incorrect")

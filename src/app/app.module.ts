@@ -36,6 +36,14 @@ import { ProduitsComponent } from './demo/components/produits&services/produits/
 import { ServicesComponent } from './demo/components/produits&services/services/services.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth/auth.interceptor';
+import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
+import { FileUploadModule } from 'primeng/fileupload';
+import { RatingModule } from 'primeng/rating';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { TableModule } from 'primeng/table';
 
 
 @NgModule({
@@ -64,7 +72,13 @@ import { AuthInterceptor } from './interceptors/auth/auth.interceptor';
         ColorPickerModule,
         ConfirmDialogModule,
         ConfirmPopupModule,
-        HttpClientModule
+        HttpClientModule,
+        ColorPickerModule,
+        ConfirmDialogModule,
+        ToastModule,
+        ToolbarModule,FileUploadModule,TableModule,RatingModule,RadioButtonModule,InputNumberModule,
+        OverlayPanelModule,
+        ConfirmPopupModule
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
