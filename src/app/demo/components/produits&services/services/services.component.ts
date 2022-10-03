@@ -3,8 +3,12 @@ import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Product } from 'src/app/demo/api/product';
 import { ProductService } from 'src/app/demo/service/product.service';
+import { Token } from 'src/app/models/auth/token/token';
 import { Produit } from 'src/app/models/Produit/produit';
 import { Service } from 'src/app/models/Service/service';
+import { Utilisateur } from 'src/app/models/Utilisateur/utilisateur';
+import { ProfileService } from 'src/app/services/auth/Profile/profile.service';
+import { ServiceAppService } from 'src/app/services/ServiceApp/service-app.service';
 
 @Component({
   selector: 'app-services',
@@ -14,135 +18,141 @@ import { Service } from 'src/app/models/Service/service';
 })
 export class ServicesComponent implements OnInit {
 
-  service !:Service;
+    service :Service = new Service();
 
-  productDialog: boolean = false;
+    bool : boolean = false;
 
-    deleteProductDialog: boolean = false;
+    services !: Service[];
 
-    deleteProductsDialog: boolean = false;
+    selectedProduct: Product = {};
 
-    products: Product[] = [];
+    productDialog: boolean = false;
 
-    product: Product = {};
+      deleteProductDialog: boolean = false;
 
-    selectedProducts: Product[] = [];
+      deleteProductsDialog: boolean = false;
 
-    submitted: boolean = false;
+      products: Product[] = [];
 
-    cols: any[] = [];
+      product: Product = {};
 
-    statuses: any[] = [];
+      selectedProducts: Product[] = [];
 
-    rowsPerPageOptions = [5, 10, 20];
+      submitted: boolean = false;
 
-  constructor(private productService: ProductService, private messageService: MessageService) { }
+      cols: any[] = [];
 
-  ngOnInit() {
-    this.service = new Service();
-    this.productService.getProducts().then(data => this.products = data);
+      statuses: any[] = [];
 
-    this.cols = [
-        { field: 'product', header: 'Product' },
-        { field: 'price', header: 'Price' },
-        { field: 'category', header: 'Category' },
-        { field: 'rating', header: 'Reviews' },
-        { field: 'inventoryStatus', header: 'Status' }
-    ];
+      rowsPerPageOptions = [5, 10, 20];
 
-    this.statuses = [
-        { label: 'INSTOCK', value: 'instock' },
-        { label: 'LOWSTOCK', value: 'lowstock' },
-        { label: 'OUTOFSTOCK', value: 'outofstock' }
-    ];
-}
+      token : Token = JSON.parse(localStorage.getItem("token")!);
 
-openNew() {
-    this.product = {};
-    this.submitted = false;
-    this.productDialog = true;
-}
+      user : Utilisateur = JSON.parse(localStorage.getItem("user")!)
 
-deleteSelectedProducts() {
-    this.deleteProductsDialog = true;
-}
+    constructor(private productService: ProductService, private profileService : ProfileService ,private messageService: MessageService, private serviceService : ServiceAppService) { }
 
-editProduct(product: Product) {
-    this.product = { ...product };
-    this.productDialog = true;
-}
+    ngOnInit() {
+      console.log(Token.getDecodedAccessToken(this.token.accesstoken));
+      this.productService.getProducts().then(data => this.products = data);
 
-deleteProduct(product: Product) {
-    this.deleteProductDialog = true;
-    this.product = { ...product };
-}
+      this.cols = [
+          { field: 'product', header: 'Product' },
+          { field: 'price', header: 'Price' },
+          { field: 'category', header: 'Category' },
+          { field: 'rating', header: 'Reviews' },
+          { field: 'inventoryStatus', header: 'Status' }
+      ];
 
-confirmDeleteSelected() {
-    this.deleteProductsDialog = false;
-    this.products = this.products.filter(val => !this.selectedProducts.includes(val));
-    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-    this.selectedProducts = [];
-}
+      this.statuses = [
+          { label: 'INSTOCK', value: 'instock' },
+          { label: 'LOWSTOCK', value: 'lowstock' },
+          { label: 'OUTOFSTOCK', value: 'outofstock' }
+      ];
+  }
 
-confirmDelete() {
-    this.deleteProductDialog = false;
-    this.products = this.products.filter(val => val.id !== this.product.id);
-    this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-    this.product = {};
-}
+  openNew() {
+      this.submitted = false;
+      this.productDialog = true;
+  }
 
-hideDialog() {
-    this.productDialog = false;
-    this.submitted = false;
-}
+  deleteSelectedProducts() {
+      this.deleteProductsDialog = true;
+  }
 
-saveProduct() {
-    this.submitted = true;
+  editFournisseur(service: Service) {
+      this.service = { ...service };
+      this.productDialog = true;
+  }
 
-    if (this.product.name?.trim()) {
-        if (this.product.id) {
-            // @ts-ignore
-            this.product.inventoryStatus = this.product.inventoryStatus.value ? this.product.inventoryStatus.value : this.product.inventoryStatus;
-            this.products[this.findIndexById(this.product.id)] = this.product;
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
-        } else {
-            this.product.id = this.createId();
-            this.product.code = this.createId();
-            this.product.image = 'product-placeholder.svg';
-            // @ts-ignore
-            this.product.inventoryStatus = this.product.inventoryStatus ? this.product.inventoryStatus.value : 'INSTOCK';
-            this.products.push(this.product);
-            this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
-        }
+  deleteProduct(product: Product) {
+      this.deleteProductDialog = true;
+      this.product = { ...product };
+  }
 
-        this.products = [...this.products];
-        this.productDialog = false;
-        this.product = {};
-    }
-}
+  confirmDeleteSelected() {
+      this.deleteProductsDialog = false;
+      this.products = this.products.filter(val => !this.selectedProducts.includes(val));
+      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+      this.selectedProducts = [];
+  }
 
-findIndexById(id: string): number {
-    let index = -1;
-    for (let i = 0; i < this.products.length; i++) {
-        if (this.products[i].id === id) {
-            index = i;
-            break;
-        }
-    }
+  confirmDelete() {
+      this.deleteProductDialog = false;
+      this.products = this.products.filter(val => val.id !== this.product.id);
+      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+      this.product = {};
+  }
 
-    return index;
-}
+  hideDialog() {
+      this.productDialog = false;
+      this.submitted = false;
+  }
 
-createId(): string {
-    let id = '';
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 5; i++) {
-        id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return id;
-}
+  saveProduct() {
+      this.submitted = true;
 
-onGlobalFilter(table: Table, event: Event) {
-    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-}
+      this.serviceService.save(this.service).subscribe(data=>{
+          this.service = new Service();
+          this.submitted = true;
+          this.productDialog = false;
+          this.profileService.profile().subscribe(data=>{
+              this.user = data;
+              localStorage.setItem("user", JSON.stringify(this.user))
+              this.ngOnInit();
+          })
+
+      },err=>{
+          alert("Error, try again");
+      })
+  }
+
+  findIndexById(id: string): number {
+      let index = -1;
+      for (let i = 0; i < this.products.length; i++) {
+          if (this.products[i].id === id) {
+              index = i;
+              break;
+          }
+      }
+
+      return index;
+  }
+
+  createId(): string {
+      let id = '';
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      for (let i = 0; i < 5; i++) {
+          id += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return id;
+  }
+
+  onGlobalFilter(table: Table, event: Event) {
+      table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  }
+
+  formatCurrency(value: number) {
+      return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  }
 }

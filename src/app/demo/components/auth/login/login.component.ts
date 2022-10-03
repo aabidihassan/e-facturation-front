@@ -61,6 +61,10 @@ export class LoginComponent implements OnInit{
 
     userAuth : Utilisateur = new Utilisateur();
 
+    formData : FormData = new FormData();
+
+    selectedFiles?: FileList;
+
     constructor(public layoutService: LayoutService, private profileService : ProfileService ,private router : Router ,private countryService: CountryService, private loginService : LoginService) { }
 
     ngOnInit() {
@@ -70,6 +74,7 @@ export class LoginComponent implements OnInit{
         }
 
         this.user = new Utilisateur();
+        this.user.entreprise.taxe = 20;
         this.countryService.getCountries().then(countries => {
             this.countries = countries;
         });
@@ -85,12 +90,19 @@ export class LoginComponent implements OnInit{
         this.productDialog = false;
         this.submitted = false;
     }
+    selectFile(event: any): void {
+        this.selectedFiles = event.target.files;
+    }
     register() {
         this.submitted = true;
-        this.loginService.register(this.user).subscribe(data=>{
+        const file: File | null = this.selectedFiles?.item(0)!;
+        this.formData.append("file", file);
+        this.formData.append("user", JSON.stringify(this.user));
+        this.loginService.register(this.formData).subscribe(data=>{
             alert("Votre compte est bien cree")
             this.login();
         },err=>{
+            this.formData = new FormData();
             alert("Erroooor")
         })
     }

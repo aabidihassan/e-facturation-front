@@ -23,8 +23,8 @@ export class LoginService {
       localStorage.clear();
     }
 
-    public register(user:Utilisateur){
-        return this.httpClient.post('http://localhost:8080/api/accounts/register', user);
+    public register(formData:FormData){
+        return this.httpClient.post('http://localhost:8080/api/accounts/register', formData);
     }
 
     public refreshtoken(refreshToken:String):Observable<any>{
@@ -33,4 +33,8 @@ export class LoginService {
             'Authorization' : "Bearer "+refreshToken
         })});
     }
+
+    // public logo(path:string){
+    //     return this.h
+    // }
 }

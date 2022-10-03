@@ -1,3 +1,3 @@
 export class Categorie {
-    public nom_categorie !: number;
+    public nom_categorie !: string;
 }

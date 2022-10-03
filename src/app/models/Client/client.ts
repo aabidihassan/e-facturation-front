@@ -3,6 +3,7 @@ import { Entreprise } from "../Entreprise/entreprise";
 export class Client {
 
     public id_client !: string;
+    public reference !: string;
     public type !: string;
     public raison !: string;
     public nom !: string;

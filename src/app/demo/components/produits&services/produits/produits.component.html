@@ -16,10 +16,10 @@
                 </ng-template>
             </p-toolbar>
 
-            <p-table #dt [value]="products" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Affichage de {first} a {last} de {totalRecords} entrées" [(selection)]="selectedProducts" selectionMode="multiple" [rowHover]="true" dataKey="id">
+            <p-table #dt [value]="user.entreprise.produits" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['reference', 'libelle', 'description','prix','quantite']" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true" currentPageReportTemplate="Affichage de {first} a {last} de {totalRecords} entrées" [(selection)]="selectedProducts" selectionMode="multiple" [rowHover]="true" dataKey="id">
                 <ng-template pTemplate="caption">
                     <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-                        <h5 class="m-0">Gérer les produits</h5>
+                        <h5 class="m-0">Gérer vos Fournisseurs</h5>
                         <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search..."  class="w-full sm:w-auto"/>
@@ -31,46 +31,47 @@
                         <th style="width: 3rem">
                             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                         </th>
-                        <th pSortableColumn="Références">Références <p-sortIcon field="Références"></p-sortIcon></th>
-                        <th pSortableColumn="Libelle">Libelle <p-sortIcon field="Libelle"></p-sortIcon></th>
-                        <th>Image</th>
-                        <th pSortableColumn="Prix">Prix <p-sortIcon field="Prix"></p-sortIcon></th>
-                        <th pSortableColumn="Description"> Description <p-sortIcon field="Description"></p-sortIcon></th>
-                        <th pSortableColumn="Quantite">Quantite disponible <p-sortIcon field="Quantite"></p-sortIcon></th>
+                        <th pSortableColumn="reference">Reference <p-sortIcon field="reference"></p-sortIcon></th>
+                        <th pSortableColumn="photo">Photo </th>
+                        <th pSortableColumn="libelle">Libelle <p-sortIcon field="libelle"></p-sortIcon></th>
+                        <th pSortableColumn="description"> Description <p-sortIcon field="description"></p-sortIcon></th>
+                        <th pSortableColumn="prix">Prix <p-sortIcon field="prix"></p-sortIcon></th>
+                        <th pSortableColumn="quantite">Quantite <p-sortIcon field="quantite"></p-sortIcon></th>
                         <th></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-product>
+                <ng-template pTemplate="body" let-produit>
                     <tr>
                         <td>
-                            <p-tableCheckbox [value]="product"></p-tableCheckbox>
+                            <p-tableCheckbox [value]="produit"></p-tableCheckbox>
                         </td>
-                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Références</span>
-                            {{product.code || product.id}}
+                        <td style="width:14%; min-width:8rem;"><span class="p-column-title">Reference</span>
+                            {{produit.reference}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
+                        <td style="width:14%; min-width: 12rem;">
+                            <img [src]="produit.file" alt="logo" width="100" class="shadow-4">
+                        </td>
+                        <td style="width:14%; min-width:8rem;">
                             <span class="p-column-title">Libelle</span>
-                            {{product.name}}
+                            {{produit.libelle}}
                         </td>
-                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Image</span>
-                            <img [src]="'assets/demo/images/product/' + product.image" [alt]="product.name" width="100" class="shadow-4" />
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">Description</span>
+                            {{produit.description}}
                         </td>
                         <td style="width:14%; min-width:8rem;">
                             <span class="p-column-title">Prix</span>
-                            {{product.price | currency:'USD'}}
+                            {{produit.prix}}
                         </td>
-                        <td style="width:14%; min-width:10rem;">
-                            <span class="p-column-title">Description</span>
-                            {{product.category}}
-                        </td>
-                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Quantite</span>
-                            <p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating>
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">Quantite</span>
+                            {{produit.quantite}}
                         </td>
 
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(product)"></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(product)"></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editFournisseur(produit)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteProduct(produit)"></button>
                             </div>
                         </td>
                     </tr>
@@ -78,35 +79,31 @@
             </p-table>
         </div>
 
-        <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Produit Details" [modal]="true" class="p-fluid">
+        <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Client Details" [modal]="true" class="p-fluid">
             <ng-template pTemplate="content">
-                <img [src]="'assets/demo/images/product/' + product.image" [alt]="product.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="product.image">
+                <img [src]="produit.file" alt="logo" width="150" class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="produit.file">
                 <div class="field">
-                    <label for="name">Références</label>
-                    <input type="text" pInputText id="name" [(ngModel)]="produit.reference" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !produit.reference}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !produit.reference"> Références is required.</small>
-                </div>
-                <div class="field">
-                    <label for="name">Libelle</label>
-                    <input type="text" pInputText id="name" [(ngModel)]="produit.libelle" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !produit.libelle}"/>
-                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !produit.libelle">Name is required.</small>
+                    <label for="libelle">Libelle</label>
+                    <input type="text" pInputText id="libelle" [(ngModel)]="produit.libelle"  autofocus />
                 </div>
                 <div class="field">
                     <label for="description">Description</label>
-                    <textarea id="description" pInputTextarea [(ngModel)]="produit.description" required rows="3" cols="20"></textarea>
+                    <input type="text" pInputText id="description" [(ngModel)]="produit.description"  autofocus />
+                </div>
+                <div class="field">
+                    <label for="prix">Prix</label>
+                    <input type="number" pInputText id="prix" [(ngModel)]="produit.prix"  autofocus />
+                </div>
+                <div class="field">
+                    <label for="quantite">Quantite</label>
+                    <input type="number" pInputText id="quantite" [(ngModel)]="produit.quantite"  autofocus />
+                </div>
+                <div class="field" *ngIf="!produit.file">
+                    <label for="photo">Photo</label>
+                    <input type="file" pInputText id="photo" (change)="selectFile($event)"  autofocus />
                 </div>
 
 
-                <div class="formgrid grid">
-                    <div class="field col">
-                        <label for="price">Prix</label>
-                        <p-inputNumber id="Prix" [(ngModel)]="produit.prix" mode="currency" currency="USD" locale="en-US"></p-inputNumber>
-                    </div>
-                    <div class="field col">
-                        <label for="quantity">Quantite</label>
-                        <p-inputNumber id="Quantite" [(ngModel)]="produit.quantite"></p-inputNumber>
-                    </div>
-                </div>
             </ng-template>
 
             <ng-template pTemplate="footer">
@@ -129,7 +126,7 @@
         <p-dialog [(visible)]="deleteProductsDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
             <div class="flex align-items-center justify-content-center">
                 <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
-                <span>Voulez-vous vraiment supprimer les produits sélectionnés ?</span>
+                <span>Voulez-vous vraiment supprimer les Fournisseur sélectionnés ?</span>
             </div>
             <ng-template pTemplate="footer">
                 <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteProductsDialog = false"></button>

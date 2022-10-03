@@ -13,11 +13,19 @@ export class ProduitService {
 
     constructor(private http : HttpClient) { }
 
-    public save(produit : Produit):Observable<any>{
-      return this.http.post(this.url, produit);
+    public save(formData : FormData):Observable<any>{
+      return this.http.post(this.url, formData);
     }
 
-    public delete(id:number):Observable<any>{
-      return this.http.delete(this.url+id);
+    public delete(id:string):Observable<any>{
+      return this.http.get(this.url+id);
     }
+
+    public logo(produit : Produit):Observable<any>{
+        return this.http.get(this.url + "photo/" + produit.photo, {
+            reportProgress: true,
+          observe: 'events',
+          responseType: 'blob' as 'json'
+        })
+      }
 }

@@ -2,6 +2,7 @@ import { Entreprise } from "../Entreprise/entreprise";
 
 export class Fournisseur {
     public id_fournisseur !: string;
+    public reference !: string;
     public type !: string;
     public raison !: string;
     public nom !: string;

@@ -16,4 +16,16 @@ export class ModeleService {
   public save(modele : ModelefactureModule):Observable<any>{
     return this.http.post(this.url, modele);
   }
+
+  public download(path : string):Observable<any>{
+    return this.http.get(this.url + path, {
+        reportProgress: true,
+        observe: 'events',
+        responseType: 'blob'
+    });
+  }
+
+  public delete(id:number):Observable<any>{
+    return this.http.get(this.url + id);
+  }
 }

@@ -1,9 +1,10 @@
 export class Modele {
 
+    public id_modele !: number;
     public nom_modelep !: string;
     public prefixe !: string;
     public description !: string;
-    public type_modele !: string;
+    public position !: string;
     public casse !: string;
     public pied !: string;
     public cl_titre_corps !: string;
@@ -29,4 +30,7 @@ export class Modele {
     public style_bordure !: string;
     public cl_bordure !: string;
     public cl_template !: string;
+    public file !: string;
+    public blob !: Blob;
+    public pdf !: Uint8Array;
 }

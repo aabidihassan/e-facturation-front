@@ -6,6 +6,8 @@ import { PhotoService } from '../../service/photo.service';
 import { ProductService } from '../../service/product.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ModeleService } from 'src/app/services/modele/modele.service';
+import { saveAs } from 'file-saver';
+import { ProfileService } from 'src/app/services/auth/Profile/profile.service';
 
 @Component({
   selector: 'app-modelefacture',
@@ -26,9 +28,9 @@ export class ModelefactureComponent implements OnInit {
   modele !: Modele;
 
   statuses = [
-    { label: 'Facture / Devis', value : "Facture / Devis" },
-    { label: 'Facture', value : "Facture" },
-    { label: 'Devis', value : "Devis" }
+    { label: 'Droite', value : "D" },
+    { label: 'Milieu', value : "M" },
+    { label: 'Gauche', value : "G" }
   ];
 
   writhing = [
@@ -91,13 +93,31 @@ export class ModelefactureComponent implements OnInit {
   private confirmationService: ConfirmationService = new ConfirmationService(); private messageService: MessageService = new MessageService();
 
 
-  constructor(private productService: ProductService, private photoService: PhotoService, private modeleService : ModeleService) { }
+  constructor(private productService: ProductService, private profileService : ProfileService, private photoService: PhotoService, private modeleService : ModeleService) { }
 
   ngOnInit() {
 
+    this.user = JSON.parse(localStorage.getItem("user")!)
+
+    if(this.user.entreprise.modeles != null){
+        this.user.entreprise.modeles.forEach(mod=>{
+            this.modeleService.download(mod.file).subscribe(data=>{
+                mod.blob = new Blob([data.body!],
+                    { type: `${data.headers.get('Content-Type')};charset=utf-8`}),
+                    data.headers.get('File-Name')
+
+                    const fileReader = new FileReader();
+                    fileReader.onload = () => {
+                        mod.pdf = new Uint8Array(fileReader.result as ArrayBuffer);
+                    };
+                    fileReader.readAsArrayBuffer(mod.blob);
+            },err=>{
+                alert("Errooooooooor");
+            })
+        })
+    }
 
     this.modele = new Modele();
-    this.user = new Utilisateur();
     this.productService.getProductsSmall().then(products => {
       this.products = products;
     });
@@ -113,14 +133,47 @@ export class ModelefactureComponent implements OnInit {
     this.modele.cl_bas = "#000000"
   }
 
+  open(file : Blob){
+    var fileURL = window.URL.createObjectURL(file);
+    let tab = window.open()!;
+    tab.location.href = fileURL;
+  }
+
+  download(file:Blob, name: string){
+    saveAs(file, name);
+    }
+
+    delete(modele:Modele){
+        this.modeleService.delete(modele.id_modele).subscribe(data=>{
+        this.profileService.profile().subscribe(data=>{
+            this.user = data;
+            localStorage.setItem("user", JSON.stringify(this.user));
+            this.ngOnInit();
+        })
+        },err=>{
+            alert("Erroor")
+        })
+    }
+
   hideDialog() {
     this.display = false;
     this.submitted = false;
   }
+
+  editModele(modele: Modele) {
+    this.modele = { ...modele };
+    this.display = true;
+}
+
   save() {
     this.submitted = true;
     this.modeleService.save(this.modele).subscribe(data=>{
-        console.log(data)
+        this.display = false;
+        this.profileService.profile().subscribe(data=>{
+            this.user = data;
+            localStorage.setItem("user", JSON.stringify(this.user));
+            this.ngOnInit();
+        })
     },err=>{
         alert("Erroooooooor")
     })
