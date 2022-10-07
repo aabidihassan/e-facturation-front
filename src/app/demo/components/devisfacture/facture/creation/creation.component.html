@@ -1,0 +1,285 @@
+<div class="grid">
+    <div class="col">
+
+        <h3>{{facture.reference || 'Nouveau'}}</h3>
+        <div class="Card">
+            <button pButton pRipple *ngIf="facture.statut==null" label="Sauvgarder" (click)="sauvegarder('brouillon')"
+                class="  mr-2 mb-2"></button>
+            <button pButton pRipple *ngIf="facture.statut=='brouillon'" label="Modifier" (click)="sauvegarder(null)"
+                class="  mr-2 mb-2"></button>
+            <button pButton pRipple label="Valider" icon="pi pi-check" (click)="sauvegarder('valide')"
+                *ngIf="facture.statut=='brouillon'" class=" p-button-success mr-2 mb-2"></button>
+            <button pButton pRipple label="Annuler" (click)="annuler()"
+                *ngIf="facture.statut==null || facture.statut=='brouillon'"
+                class="p-button-outlined mr-2 mb-2"></button>
+            <button pButton pRipple label="Enregistrer un paiement" *ngIf="facture.statut=='valide'"
+                (click)="openPaiement()" class="mr-2 mb-2"></button>
+            <button pButton pRipple icon="pi pi-send" (click)="openEamil()" *ngIf="facture.statut!=null"
+                label="Envoyer par Email" class="p-button-danger mr-2 mb-2"></button>
+            <button pButton pRipple icon="pi pi-print" (click)="open()" *ngIf="facture.statut!=null" label="Imprimer"
+                class="p-button-secondary mr-2 mb-2"></button>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+
+    <h5 class="mb-4">Facture {{facture.statut || 'brouillon'}}</h5>
+
+    <div class="p-fluid p-formgrid grid">
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <p-dropdown [disabled]="facture.statut!=null" inputId="dropdown" [autoDisplayFirst]="false"
+                    [(ngModel)]="facture.client" [options]="user.entreprise.clients">
+                    <ng-template let-operatingSystems pTemplate="item">
+                        <div class="flex align-items-center operatingSystems-item">
+                            <div>{{operatingSystems.raison || operatingSystems.nom}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+                <label for="dropdown">Client</label>
+            </span>
+        </div>
+
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <p-calendar inputId="calendar" [disabled]="facture.statut!=null" [(ngModel)]="facture.creation">
+                </p-calendar>
+                <label for="calendar">Date de Creation</label>
+            </span>
+
+        </div>
+        <div class="field col-12 md:col-3">
+            <span class="p-float-label">
+                <p-calendar [disabled]="facture.statut!=null" [(ngModel)]="facture.echeance"></p-calendar>
+                <label for="calendar">Date d'échéance</label>
+            </span>
+        </div>
+    </div>
+    <div class="card">
+        <button pButton pRipple *ngIf="facture.statut==null" icon="pi pi-plus" label="Ligne Commande"
+            (click)="openCommande()" class="p-button-secondary  mr-2 mb-2"></button>
+        <p-table [value]="facture.lignes" scrollDirection="both" [scrollable]="true" scrollHeight="400px"
+            styleClass="mt-3" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width:17%">Article</th>
+                    <th style="width:17%">Description</th>
+                    <th style="width:17%">Prix Unite</th>
+                    <th style="width:17%">Quantité</th>
+                    <th style="width:17%">Sous-Total</th>
+                    <th style="width:10%" alignFrozen="right" *ngIf="facture.statut==null"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-ligne>
+                <tr>
+                    <td style="width:17%">{{ligne.produit.libelle || ligne.service.libelle}}</td>
+                    <td style="width:17%">{{ligne.produit.description || ligne.service.description}}</td>
+                    <td style="width:17%">{{ligne.produit.prix || ligne.service.taux_horaire}}</td>
+                    <td style="width:17%">{{ligne.qte}}</td>
+                    <td style="width:17%">{{ligne.ht}}</td>
+                    <td style="width:10%" alignFrozen="right" *ngIf="facture.statut==null">
+                        <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger"></button>
+
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <div class="formgrid grid" style="position: relative;float: right; margin-right: 18%;">
+        <div class="">
+            <h5>Montant HT : </h5>
+
+        </div>
+        <div class="">
+            <h5>{{facture.ht}}</h5>
+        </div>
+
+
+    </div>
+    <br />
+    <div class="formgrid grid" style="position: relative;float: right; margin-right: 18%;">
+        <div class="">
+            <h5>Taxe: </h5>
+
+        </div>
+        <div class="">
+            <h5> {{facture.ttc - facture.ht}}</h5>
+        </div>
+
+
+    </div>
+
+    <div class="formgrid grid" style="position: relative;float: right; margin-right: 18%;">
+        <div class="">
+            <h5>Total: </h5>
+
+        </div>
+        <div class="">
+            <h5> {{facture.ttc}}</h5>
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+<p-dialog [(visible)]="paiementDialog" [style]="{width: '30%', height: '80%'}" header="Enregistrer un paiement"
+    [modal]="true" class="p-fluid">
+
+
+    <ng-template pTemplate="content">
+
+        <div class="field col-12 md:col-12">
+            <span class="p-float-label">
+                <p-calendar inputId="calendar" [(ngModel)]="reglement.date"></p-calendar>
+                <label for="calendar" [(ngModel)]="reglement.date">Date de règlement</label>
+            </span>
+        </div>
+
+        <div class="field col-12 md:col-12">
+            <span class="p-float-label">
+                <input  id="Prix" [(ngModel)]="reglement.montant" type="number" />
+                <label for="dropdown">Montant du paiement</label>
+            </span>
+        </div>
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text "
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Valider" (click)="addReglement()" icon="pi pi-check" class="p-button-text p-button-success"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="commandeDialog" [style]="{width: '30%', height: '50%'}" header="Ajouter un ligne de Commande "
+    [modal]="true" class="p-fluid">
+
+    <ng-template pTemplate="content">
+
+        <div class="field col-12 md:col-12 mt-2" *ngIf="type=='PRODUITS & SERVICES'">
+            <span class="p-float-label">
+                <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" [options]="types" [(ngModel)]="type">
+                </p-dropdown>
+                <label for="dropdown">Type</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-12" *ngIf="type=='PRODUITS'">
+            <span class="p-float-label">
+                <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" [options]="user.entreprise.produits"
+                    [(ngModel)]="ligne.produit" optionLabel="libelle"></p-dropdown>
+                <label for="dropdown">Produits</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-12" *ngIf="type=='SERVICES'">
+            <span class="p-float-label">
+                <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" [(ngModel)]="ligne.service"
+                    optionLabel="libelle"></p-dropdown>
+                <label for="dropdown">Services</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-12" *ngIf="type=='PRODUITS'">
+            <span class="p-float-label">
+                <p-inputNumber id="Quantite" [(ngModel)]="ligne.qte"></p-inputNumber>
+                <label for="dropdown">Quantite</label>
+            </span>
+        </div>
+        <div class="field col-12 md:col-12" *ngIf="type=='SERVICES'">
+            <span class="p-float-label">
+                <p-inputNumber id="Quantite" [(ngModel)]="ligne.qte"></p-inputNumber>
+                <label for="dropdown">Nombre d'huere</label>
+            </span>
+        </div>
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text "
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Ajouter" icon="pi pi-check" class="p-button-text p-button-success"
+            (click)="addLigne()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="emailDialog" [style]="{width: '65%', height: '100%'}" header="Envoyer la facture  "
+    [modal]="true" class="p-fluid">
+
+
+    <ng-template pTemplate="content">
+
+        <div class="formgrid grid">
+
+            <div class="field col-2">
+                <H6 class="mt-3">Destinataire</H6>
+            </div>
+            <div class="field col-9" style="margin-left: 0%;">
+                <input type="text" pInputText required autofocus [(ngModel)]="facture.client.email" />
+
+            </div>
+
+        </div>
+        <div class="formgrid grid">
+
+            <div class="field col-2">
+                <H6 class="mt-3">Sujet</H6>
+            </div>
+            <div class="field col-9" style="margin-left: 0%;">
+                <input type="text" pInputText required autofocus [(ngModel)]="facture.reference" />
+            </div>
+
+        </div>
+        <div class="formgrid grid">
+            <ckeditor [(ngModel)]="ckeditorContent">
+            </ckeditor>
+        </div>
+
+
+
+
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text "
+            (click)="hideDialog()"></button>
+        <button pButton pRipple label="Envoyer" icon="pi pi-check" class="p-button-text p-button-success"></button>
+    </ng-template>
+</p-dialog>
+
+
+<p-dialog [(visible)]="telechargertDialog" [style]="{width: '60%', height: '80%'}" header="Selectionner Modéle "
+    [modal]="true" class="p-fluid">
+
+
+    <ng-template pTemplate="content">
+
+
+        <p-carousel [value]="products" [numVisible]="3" [numScroll]="3" [circular]="false"
+            [responsiveOptions]="carouselResponsiveOptions">
+            <ng-template let-product pTemplate="item">
+                <div class="border-round m-1 text-center p-2"
+                    style="cursor: pointer ;border: 1px solid var(--surface-d)">
+                    <div class="my-4">
+                        <pdf-viewer [src]="pdfSrc" [render-text]="true" [original-size]="false"
+                            style="width: 100%; height: 300px"></pdf-viewer>
+                    </div>
+                    <div>
+                        <h5 class="mb-1">{{product.name}}</h5>
+
+                        <div class="justify-content: center">
+                            <button pButton pRipple style="width:70% ;" label="Selectionner"
+                                class=" p-button-success"></button>
+
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </p-carousel>
+
+    </ng-template>
+
+</p-dialog>

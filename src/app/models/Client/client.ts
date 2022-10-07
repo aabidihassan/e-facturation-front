@@ -1,4 +1,5 @@
 import { Entreprise } from "../Entreprise/entreprise";
+import { Facture } from "../Facture/facture";
 
 export class Client {
 
@@ -14,5 +15,6 @@ export class Client {
     public pays !: string;
     public ville !: string;
     public code_postal !: string;
+    public factures !: Array<Facture>;
     public entreprise !: Entreprise;
 }

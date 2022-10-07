@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { CommonModule, DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
@@ -23,7 +23,7 @@ import { CarouselModule } from 'primeng/carousel';
 import { DialogModule } from 'primeng/dialog';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DropdownModule } from 'primeng/dropdown';
@@ -44,11 +44,25 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TableModule } from 'primeng/table';
+import { FactureComponent } from './demo/components/devisfacture/facture/facture/facture.component';
+import { CreationComponent } from './demo/components/devisfacture/facture/creation/creation.component';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { MenubarModule } from 'primeng/menubar';
+import { ChipsModule } from 'primeng/chips';
+import { CalendarModule } from 'primeng/calendar';
+import { InputMaskModule } from 'primeng/inputmask';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DataViewModule } from 'primeng/dataview';
+import { PasswordModule } from 'primeng/password';
+import { CascadeSelectModule } from 'primeng/cascadeselect';
+import { AuthRoutingModule } from './demo/components/auth/auth-routing.module';
+import { FormlayoutRoutingModule } from './demo/components/uikit/formlayout/formlayout-routing.module';
+import { CKEditorModule } from 'ng2-ckeditor';
 
 
 @NgModule({
     declarations: [
-        AppComponent, NotfoundComponent, ModelefactureComponent, ClientsComponent, FournisseursComponent, ProduitsComponent, ServicesComponent
+        AppComponent, NotfoundComponent, ModelefactureComponent, ClientsComponent, FournisseursComponent, ProduitsComponent, ServicesComponent, FactureComponent, CreationComponent
     ],
     imports: [
         AppRoutingModule,
@@ -78,6 +92,17 @@ import { TableModule } from 'primeng/table';
         ToastModule,
         ToolbarModule,FileUploadModule,TableModule,RatingModule,RadioButtonModule,InputNumberModule,
         OverlayPanelModule,
+        OverlayPanelModule,MenubarModule, AutoCompleteModule, ChipsModule,CalendarModule, InputMaskModule,MultiSelectModule,
+        ReactiveFormsModule,
+        DataViewModule,HttpClientModule,CKEditorModule,
+
+
+        PasswordModule,
+       CascadeSelectModule,
+        DialogModule,
+        AuthRoutingModule,
+        FormlayoutRoutingModule,
+
         ConfirmPopupModule
     ],
     providers: [
@@ -85,6 +110,7 @@ import { TableModule } from 'primeng/table';
         CountryService, CustomerService, EventService, IconService, NodeService,
         PhotoService, ProductService,
         {provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true},
+        DatePipe
     ],
     bootstrap: [AppComponent]
 })

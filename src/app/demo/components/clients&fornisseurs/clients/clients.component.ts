@@ -1,11 +1,13 @@
 
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { Product } from 'src/app/demo/api/product';
 import { ProductService } from 'src/app/demo/service/product.service';
 import { Token } from 'src/app/models/auth/token/token';
 import { Client } from 'src/app/models/Client/client';
+import { Facture } from 'src/app/models/Facture/facture';
 import { Utilisateur } from 'src/app/models/Utilisateur/utilisateur';
 import { ProfileService } from 'src/app/services/auth/Profile/profile.service';
 import { ClientService } from 'src/app/services/Client/client.service';
@@ -54,7 +56,7 @@ export class ClientsComponent implements OnInit {
 
     user : Utilisateur = JSON.parse(localStorage.getItem("user")!)
 
-  constructor(private productService: ProductService, private profileService : ProfileService ,private messageService: MessageService, private clientService : ClientService) { }
+  constructor(private router : Router, private productService: ProductService, private profileService : ProfileService ,private messageService: MessageService, private clientService : ClientService) { }
 
   ngOnInit() {
 
@@ -103,6 +105,10 @@ change(){
         this.bool = true;
         this.client.raison = "";
     }
+}
+
+openFacture(facture : Facture){
+    this.router.navigate(['/factures/creation'], { state: {facture: facture} });
 }
 
 deleteProduct(product: Product) {

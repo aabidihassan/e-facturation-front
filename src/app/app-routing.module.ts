@@ -8,6 +8,8 @@ import { FournisseursComponent } from './demo/components/clients&fornisseurs/fou
 import { ProduitsComponent } from './demo/components/produits&services/produits/produits.component';
 import { ServicesComponent } from './demo/components/produits&services/services/services.component';
 import { AuthGuard } from './guards/auth/auth.guard';
+import { FactureComponent } from './demo/components/devisfacture/facture/facture/facture.component';
+import { CreationComponent } from './demo/components/devisfacture/facture/creation/creation.component';
 
 
 @NgModule({
@@ -26,7 +28,11 @@ import { AuthGuard } from './guards/auth/auth.guard';
                     { path: 'clients', component: ClientsComponent },
                     { path: 'fournisseurs', component: FournisseursComponent },
                     { path: 'produits', component: ProduitsComponent },
-                    { path: 'services', component: ServicesComponent }
+                    { path: 'services', component: ServicesComponent },
+                    { path: 'factures', children:[
+                        { path: '', component: FactureComponent },
+                        { path: 'creation', component: CreationComponent }
+                    ] }
                 ],canActivate:[AuthGuard],
             },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },

@@ -41,8 +41,7 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: ' Les Factures',
                         items: [
-                            { label: ' Les Devis', icon: 'pi pi-fw bi bi-clipboard2', routerLink: ['/'] },
-                            { label: ' Les Factures', icon: 'pi pi-fw bi bi-clipboard2-check', routerLink: ['/'] }
+                            { label: ' Les Factures', icon: 'pi pi-fw bi bi-clipboard2-check', routerLink: ['/factures'] }
                         ]
                     },
 
@@ -57,7 +56,6 @@ export class AppMenuComponent implements OnInit {
                         label: 'Produits',
                         items: [
                             { label: 'List Produits', icon: 'pi pi-fw pi-shopping-bag', routerLink: ['/produits'] },
-                            { label: 'List Service', icon: 'pi pi-fw pi-slack', routerLink: ['/services'] }
                         ]
                     }
                 ];
@@ -79,8 +77,7 @@ export class AppMenuComponent implements OnInit {
                 {
                     label: ' Les Factures',
                     items: [
-                        { label: ' Les Devis', icon: 'pi pi-fw bi bi-clipboard2', routerLink: ['/'] },
-                        { label: ' Les Factures', icon: 'pi pi-fw bi bi-clipboard2-check', routerLink: ['/'] }
+                        { label: ' Les Factures', icon: 'pi pi-fw bi bi-clipboard2-check', routerLink: ['/factures'] }
                     ]
                 },
 
@@ -92,10 +89,9 @@ export class AppMenuComponent implements OnInit {
                     ]
                 },
                 {
-                    label: 'Produits',
+                    label: 'Services',
                     items: [
-                        { label: 'List Produits', icon: 'pi pi-fw pi-shopping-bag', routerLink: ['/produits'] },
-                        { label: 'List Service', icon: 'pi pi-fw pi-slack', routerLink: ['/services'] }
+                        { label: 'List Services', icon: 'pi pi-fw pi-slack', routerLink: ['/services'] }
                     ]
                 }
             ];
@@ -116,8 +112,7 @@ export class AppMenuComponent implements OnInit {
                 {
                     label: ' Les Factures',
                     items: [
-                        { label: ' Les Devis', icon: 'pi pi-fw bi bi-clipboard2', routerLink: ['/'] },
-                        { label: ' Les Factures', icon: 'pi pi-fw bi bi-clipboard2-check', routerLink: ['/'] }
+                        { label: ' Les Factures', icon: 'pi pi-fw bi bi-clipboard2-check', routerLink: ['/factures'] }
                     ]
                 },
 
@@ -129,10 +124,10 @@ export class AppMenuComponent implements OnInit {
                     ]
                 },
                 {
-                    label: 'Produits',
+                    label: 'Produits/Services',
                     items: [
                         { label: 'List Produits', icon: 'pi pi-fw pi-shopping-bag', routerLink: ['/produits'] },
-                        { label: 'List Service', icon: 'pi pi-fw pi-slack', routerLink: ['/services'] }
+                        { label: 'List Services', icon: 'pi pi-fw pi-slack', routerLink: ['/services'] }
                     ]
                 }
             ];
