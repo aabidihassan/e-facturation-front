@@ -14,9 +14,9 @@
                 class="p-button-outlined mr-2 mb-2"></button>
             <button pButton pRipple label="Enregistrer un paiement" *ngIf="facture.statut=='valide'"
                 (click)="openPaiement()" class="mr-2 mb-2"></button>
-            <button pButton pRipple icon="pi pi-send" (click)="openEamil()" *ngIf="facture.statut!=null"
+            <button pButton pRipple icon="pi pi-send" (click)="open(true)" *ngIf="facture.statut!=null"
                 label="Envoyer par Email" class="p-button-danger mr-2 mb-2"></button>
-            <button pButton pRipple icon="pi pi-print" (click)="open()" *ngIf="facture.statut!=null" label="Imprimer"
+            <button pButton pRipple icon="pi pi-print" (click)="open(false)" *ngIf="facture.statut!=null" label="Imprimer"
                 class="p-button-secondary mr-2 mb-2"></button>
         </div>
     </div>
@@ -117,6 +117,30 @@
         </div>
         <div class="">
             <h5> {{facture.ttc}}</h5>
+        </div>
+
+
+    </div>
+
+    <div class="formgrid grid" style="position: relative;float: right; margin-right: 18%;">
+        <div class="">
+            <h5>Reglements: </h5>
+
+        </div>
+        <div class="">
+            <h5 *ngFor="let reg of facture.reglements"> {{reg.date + ': ' + reg.montant}} </h5>
+        </div>
+
+
+    </div>
+
+    <div class="formgrid grid" style="position: relative;float: right; margin-right: 18%;">
+        <div class="">
+            <h5>Reste: </h5>
+
+        </div>
+        <div class="">
+            <h5> {{facture.reste}}</h5>
         </div>
 
 
@@ -230,12 +254,12 @@
                 <H6 class="mt-3">Sujet</H6>
             </div>
             <div class="field col-9" style="margin-left: 0%;">
-                <input type="text" pInputText required autofocus [(ngModel)]="facture.reference" />
+                <input type="text" pInputText required autofocus [(ngModel)]="content.object" />
             </div>
 
         </div>
         <div class="formgrid grid">
-            <ckeditor [(ngModel)]="ckeditorContent">
+            <ckeditor [(ngModel)]="content.message">
             </ckeditor>
         </div>
 
@@ -246,39 +270,38 @@
     <ng-template pTemplate="footer">
         <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text "
             (click)="hideDialog()"></button>
-        <button pButton pRipple label="Envoyer" icon="pi pi-check" class="p-button-text p-button-success"></button>
+        <button pButton pRipple label="Envoyer" (click)="sendMail()" icon="pi pi-check" class="p-button-text p-button-success"></button>
     </ng-template>
 </p-dialog>
 
 
-<p-dialog [(visible)]="telechargertDialog" [style]="{width: '60%', height: '80%'}" header="Selectionner Modéle "
-    [modal]="true" class="p-fluid">
+<p-dialog [(visible)]="telechargertDialog" [style]="{width: '60%', height: '80%'}" header="Selectionner Modéle " [modal]="true" class="p-fluid">
 
 
     <ng-template pTemplate="content">
 
 
-        <p-carousel [value]="products" [numVisible]="3" [numScroll]="3" [circular]="false"
-            [responsiveOptions]="carouselResponsiveOptions">
-            <ng-template let-product pTemplate="item">
-                <div class="border-round m-1 text-center p-2"
-                    style="cursor: pointer ;border: 1px solid var(--surface-d)">
-                    <div class="my-4">
-                        <pdf-viewer [src]="pdfSrc" [render-text]="true" [original-size]="false"
-                            style="width: 100%; height: 300px"></pdf-viewer>
-                    </div>
-                    <div>
-                        <h5 class="mb-1">{{product.name}}</h5>
+                    <p-carousel [value]="user.entreprise.modeles" [numVisible]="3" [numScroll]="3" [circular]="false" [responsiveOptions]="carouselResponsiveOptions">
+                        <ng-template let-modele pTemplate="item">
+                                <div class="border-round m-1 text-center p-2" style="cursor: pointer ;border: 1px solid var(--surface-d)">
+                                    <div class="my-4">
+                                        <pdf-viewer [src]="modele.pdf"
+                                        [render-text]="true"
+                                        [original-size]="false"
+                                        style="width: 100%; height: 300px"
+                                            ></pdf-viewer>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">{{modele.nom_modelep}}</h5>
 
-                        <div class="justify-content: center">
-                            <button pButton pRipple style="width:70% ;" label="Selectionner"
-                                class=" p-button-success"></button>
+                                        <div  class="justify-content: center">
+                                        <button pButton pRipple style="width:70% ;" (click)="generer(modele)" label="Selectionner" class=" p-button-success"></button>
 
-                        </div>
-                    </div>
-                </div>
-            </ng-template>
-        </p-carousel>
+                                        </div>
+                                    </div>
+                                </div>
+                        </ng-template>
+                    </p-carousel>
 
     </ng-template>
 

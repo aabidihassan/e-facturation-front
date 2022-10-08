@@ -140,7 +140,6 @@ saveProduct() {
 
     this.clientService.save(this.client).subscribe(data=>{
         this.client = new Client();
-        alert("Client bien ajoute");
         this.submitted = true;
         this.productDialog = false;
         this.profileService.profile().subscribe(data=>{

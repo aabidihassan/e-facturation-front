@@ -31,7 +31,7 @@
                             <div class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
                                 <span class="text-2xl font-semibold mb-2 align-self-center md:align-self-end"> Total : ${{facture.ttc}}</span>
                                 <div>
-                                    <p-button icon="pi pi-download" (click)="open()" label="Télécharger" class=" p-button-success mr-2 mb-2"></p-button>
+                                    <p-button icon="pi pi-download" (click)="open(facture)" label="Télécharger" class=" p-button-success mr-2 mb-2"></p-button>
                                     <p-button icon="pi pi-exclamation-circle" label="détail" class=" p-button-help" (onClick)="details(facture)"></p-button>
 
                                 </div>
@@ -47,18 +47,18 @@
                             <div class="flex align-items-center justify-content-between">
                                 <div class="flex align-items-center">
                                     <i class="pi pi-tag mr-2"></i>
-                                    <span class="font-semibold">{{facture.reference}}</span>
+                                    <span class="font-semibold">Client : {{facture.client.raison || facture.client.nom}}</span>
                                 </div>
                                 <span [class]="'sm:ml-2 product-badge status-lowstock'">{{facture.statut}}</span>
                             </div>
                             <div class="text-center">
                                 <div class="text-2xl font-bold">{{facture.reference}}</div>
-                                <div class="mb-3"> client : {{facture.client.raison || facture.client.nom}}</div>
+                                <div class="mb-3">Date d'echeance: {{facture.echeance}}</div>
                             </div>
                             <div class="flex align-items-center justify-content-between">
                                 <span class="text-2xl font-semibold"> Total : ${{facture.ttc}}</span>
                                 <div >
-                                    <p-button icon="pi pi-download" (click)="open()" class=" p-button-help mr-2"  ></p-button>
+                                    <p-button icon="pi pi-download" (click)="open(facture)" class=" p-button-help mr-2"  ></p-button>
                                     <p-button icon="pi pi-exclamation-circle" class=" p-button-help" (onClick)="details(facture)"></p-button>
                                 </div>
                             </div>
@@ -90,7 +90,7 @@
                                         <h5 class="mb-1">{{modele.nom_modelep}}</h5>
 
                                         <div  class="justify-content: center">
-                                        <button pButton pRipple style="width:70% ;"  label="Selectionner" class=" p-button-success"></button>
+                                        <button pButton pRipple style="width:70% ;" (click)="generer(modele)" label="Selectionner" class=" p-button-success"></button>
 
                                         </div>
                                     </div>

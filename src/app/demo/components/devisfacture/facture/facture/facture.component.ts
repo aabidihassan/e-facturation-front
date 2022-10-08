@@ -3,12 +3,13 @@ import { Router } from '@angular/router';
 import { SelectItem } from 'primeng/api';
 import { DataView } from 'primeng/dataview';
 import { Product } from 'src/app/demo/api/product';
-import { ProductService } from 'src/app/demo/service/product.service';
+import { Generation } from 'src/app/dto/facture/generation/generation';
 import { Facture } from 'src/app/models/Facture/facture';
+import { Modele } from 'src/app/models/Modele/modele';
 import { Utilisateur } from 'src/app/models/Utilisateur/utilisateur';
-import { ProfileService } from 'src/app/services/auth/Profile/profile.service';
 import { FactureService } from 'src/app/services/Facture/facture.service';
 import { ModeleService } from 'src/app/services/modele/modele.service';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-facture',
@@ -56,9 +57,12 @@ export class FactureComponent implements OnInit {
   user !: Utilisateur;
 
   factures !: Array<Facture>;
+  factureSelected !: Facture;
+  generation !: Generation;
+  blob !: Blob;
 
 
-  constructor(private productService: ProductService, private factureService: FactureService, private router:Router, private modeleService : ModeleService, private profileService: ProfileService) { }
+  constructor(private factureService: FactureService, private router:Router, private modeleService : ModeleService) { }
 
   ngOnInit() {
 
@@ -106,8 +110,25 @@ onFilter(dv: DataView, event: Event) {
 goPlaces() {
   this.router.navigateByUrl('/factures/creation');
 }
-open() {
+generer(modele:Modele){
+    this.generation.modele = modele;
+    this.factureService.generate(this.generation).subscribe(data=>{
+        this.blob = new Blob([data.body!],
+            { type: `${data.headers.get('Content-Type')};charset=utf-8`}),
+            data.headers.get('File-Name')
 
+            setTimeout(() =>
+            {
+                saveAs(this.blob, this.generation.facture.reference);
+            },
+            500);
+    },err=>{
+        alert("Erroooor")
+    })
+}
+open(facture : Facture) {
+    this.generation = new Generation();
+    this.generation.facture = facture;
     this.telechargertDialog = true;
   }
   hideDialog() {

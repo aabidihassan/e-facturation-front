@@ -6,7 +6,6 @@ export class Service {
     public reference !: string;
     public libelle !: string;
     public description !: string;
-    public prix !: number;
     public taux_horaire !: number;
     public entreprise !: Entreprise;
 

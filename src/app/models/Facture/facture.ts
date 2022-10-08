@@ -15,5 +15,6 @@ export class Facture {
     public statut !: string;
     public lignes !: Array<LigneCommande>;
     public reglements !: Array<Reglement>;
+    public reste !: number;
 
 }

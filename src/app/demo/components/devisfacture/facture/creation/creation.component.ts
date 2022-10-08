@@ -10,6 +10,12 @@ import { Facture } from 'src/app/models/Facture/facture';
 import { FactureService } from 'src/app/services/Facture/facture.service';
 import { DatePipe } from '@angular/common';
 import { Reglement } from 'src/app/models/Reglement/reglement';
+import * as printJS from "print-js";
+import { Modele } from 'src/app/models/Modele/modele';
+import { Generation } from 'src/app/dto/facture/generation/generation';
+import { ModeleService } from 'src/app/services/modele/modele.service';
+import { saveAs } from 'file-saver';
+import { Send } from 'src/app/dto/facture/send/send';
 @Component({
   selector: 'app-creationfacture',
   templateUrl: './creation.component.html',
@@ -18,8 +24,6 @@ import { Reglement } from 'src/app/models/Reglement/reglement';
 export class CreationComponent implements OnInit {
 
   @ViewChild('ckeditor') ckeditor=CKEditorComponent;
-
-  ckeditorContent !: string;
 
   customers1: Customer[] = [];
 
@@ -38,6 +42,8 @@ export class CreationComponent implements OnInit {
   products: Product[] = [];
 
   rowGroupMetadata: any;
+  generation !: Generation;
+  blob !: Blob;
 
 
 
@@ -56,6 +62,8 @@ export class CreationComponent implements OnInit {
   telechargertDialog : boolean = false;
 
   reglement !: Reglement;
+  isEmail !: boolean;
+  content !: Send;
 
   types = [
     { label: 'Service', value: "SERVICES" },
@@ -89,7 +97,7 @@ export class CreationComponent implements OnInit {
   type !: string;
   today !: string;
 
-  constructor( private productService: ProductService,private router:Router, private factureService : FactureService, private datepipe: DatePipe) { }
+  constructor( private productService: ProductService, private modeleService : ModeleService, private router:Router, private factureService : FactureService, private datepipe: DatePipe) { }
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem("user")!);
@@ -100,6 +108,7 @@ export class CreationComponent implements OnInit {
     if(history.state.facture == null) {
         this.facture = new Facture();
         this.facture.numero = 0;
+        this.facture.reste = 0;
         this.facture.creation = this.today;
     }
     else this.facture = history.state.facture;
@@ -113,6 +122,38 @@ export class CreationComponent implements OnInit {
     this.productService.getProducts().then(data => this.products = data);
 
   }
+
+  generer(modele:Modele){
+
+    if(this.isEmail){
+        this.content = new Send();
+        this.content.object = this.facture.reference;
+        this.content.message = "<p>Cher(e) " + this.facture.client.raison + this.facture.client.nom + ".<br /> <br />Voici votre facture&nbsp;<strong>" + this.facture.reference +"</strong>&nbsp;d&#39;un montant de&nbsp;<strong>&nbsp;" + this.facture.ttc + "&nbsp;DH</strong>&nbsp;de <strong>" + this.user.entreprise.raison + "</strong>.<br />N&#39;h&eacute;sitez pas &agrave; nous contacter pour toutes questions</p>"
+        this.content.facture = this.facture;
+        this.content.modele = modele;
+        this.hideDialog();
+        this.openEamil();
+    }else{
+        this.generation = new Generation();
+        this.generation.modele = modele;
+        this.generation.facture = this.facture;
+        this.factureService.generate(this.generation).subscribe(data=>{
+            this.blob = new Blob([data.body!],
+                { type: `${data.headers.get('Content-Type')};charset=utf-8`}),
+                data.headers.get('File-Name')
+
+                setTimeout(() =>
+                {
+                    const blobUrl = URL.createObjectURL(this.blob);
+                    printJS(blobUrl);
+                },
+                500);
+
+        },err=>{
+            alert("Erroooor")
+        })
+    }
+}
 
   openPaiement() {
     this.reglement = new Reglement();
@@ -131,6 +172,7 @@ export class CreationComponent implements OnInit {
     this.facture.reglements.forEach((r)=>{
         totalReglement += r.montant;
     })
+    this.facture.reste = (this.facture.ttc-totalReglement);
     if(totalReglement>=this.facture.ttc) this.facture.statut = 'paye';
     this.factureService.save(this.facture).subscribe(data=>{
         this.facture = data;
@@ -151,11 +193,13 @@ export class CreationComponent implements OnInit {
         this.facture.ht+=l.ht;
         this.facture.ttc+=l.ttc;
     })
+    this.facture.reste+=this.ligne.ttc;
     this.commandeDialog = false;
   }
 
   sauvegarder(statut : any){
     this.facture.statut = statut;
+    if(statut=='valide') this.facture.validation = this.today;
     if(statut != null){
         this.factureService.save(this.facture).subscribe(data=>{
         this.facture = data;
@@ -171,20 +215,43 @@ export class CreationComponent implements OnInit {
   }
 
   openEamil() {
-    this.ckeditorContent = "<p>Cher(e) " + this.facture.client.raison + this.facture.client.nom + ".<br /> <br />Voici votre facture&nbsp;<strong>" + this.facture.reference +"</strong>&nbsp;d&#39;un montant de&nbsp;<strong>&nbsp;" + this.facture.ttc + "&nbsp;DH</strong>&nbsp;de <strong>" + this.user.entreprise.raison + "</strong>.<br />N&#39;h&eacute;sitez pas &agrave; nous contacter pour toutes questions</p>"
     this.emailDialog = true;
   }
 
-  open() {
+  open(bool:boolean) {
+    this.isEmail = bool;
+    this.user.entreprise.modeles.forEach(mod=>{
+        this.modeleService.download(mod.file).subscribe(data=>{
+            mod.blob = new Blob([data.body!],
+                { type: `${data.headers.get('Content-Type')};charset=utf-8`}),
+                data.headers.get('File-Name')
 
+                const fileReader = new FileReader();
+                fileReader.onload = () => {
+                    mod.pdf = new Uint8Array(fileReader.result as ArrayBuffer);
+                };
+                fileReader.readAsArrayBuffer(mod.blob);
+        },err=>{
+            alert("Errooooooooor");
+        })
+    })
     this.telechargertDialog = true;
+  }
+
+  sendMail(){
+    this.factureService.sendMail(this.content).subscribe(data=>{
+        alert("Email bien envoyer")
+        this.hideDialog();
+    },err=>{
+        alert("Error")
+    })
   }
 
   hideDialog() {
     this.paiementDialog = false;
     this.commandeDialog = false;
     this.emailDialog = false;
-
+    this.telechargertDialog = false;
 
 }
 
