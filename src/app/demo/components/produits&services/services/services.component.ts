@@ -4,7 +4,6 @@ import { Table } from 'primeng/table';
 import { Product } from 'src/app/demo/api/product';
 import { ProductService } from 'src/app/demo/service/product.service';
 import { Token } from 'src/app/models/auth/token/token';
-import { Produit } from 'src/app/models/Produit/produit';
 import { Service } from 'src/app/models/Service/service';
 import { Utilisateur } from 'src/app/models/Utilisateur/utilisateur';
 import { ProfileService } from 'src/app/services/auth/Profile/profile.service';
@@ -48,13 +47,17 @@ export class ServicesComponent implements OnInit {
 
       token : Token = JSON.parse(localStorage.getItem("token")!);
 
-      user : Utilisateur = JSON.parse(localStorage.getItem("user")!)
+      user !: Utilisateur;
 
-    constructor(private productService: ProductService, private profileService : ProfileService ,private messageService: MessageService, private serviceService : ServiceAppService) { }
+    constructor(private profileService : ProfileService ,private messageService: MessageService, private serviceService : ServiceAppService) { }
 
     ngOnInit() {
-      console.log(Token.getDecodedAccessToken(this.token.accesstoken));
-      this.productService.getProducts().then(data => this.products = data);
+
+        this.profileService.profile().subscribe(data=>{
+            this.user = data;
+        },err=>{
+            this.ngOnInit();
+        })
 
       this.cols = [
           { field: 'product', header: 'Product' },
@@ -85,9 +88,9 @@ export class ServicesComponent implements OnInit {
       this.productDialog = true;
   }
 
-  deleteProduct(product: Product) {
+  deleteProduct(product: Service) {
       this.deleteProductDialog = true;
-      this.product = { ...product };
+      this.service = { ...product };
   }
 
   confirmDeleteSelected() {
@@ -99,9 +102,12 @@ export class ServicesComponent implements OnInit {
 
   confirmDelete() {
       this.deleteProductDialog = false;
-      this.products = this.products.filter(val => val.id !== this.product.id);
-      this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-      this.product = {};
+      this.serviceService.delete(this.service.id_service).subscribe(data=>{
+        alert("Service bien supprime")
+      },err=>{
+        alert("Erroor")
+      })
+      this.service = new Service();
   }
 
   hideDialog() {

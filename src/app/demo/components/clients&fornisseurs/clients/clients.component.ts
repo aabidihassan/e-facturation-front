@@ -48,38 +48,19 @@ export class ClientsComponent implements OnInit {
 
     cols: any[] = [];
 
-    statuses: any[] = [];
-
-    rowsPerPageOptions = [5, 10, 20];
-
     token : Token = JSON.parse(localStorage.getItem("token")!);
 
-    user : Utilisateur = JSON.parse(localStorage.getItem("user")!)
+    user !: Utilisateur;
 
-  constructor(private router : Router, private productService: ProductService, private profileService : ProfileService ,private messageService: MessageService, private clientService : ClientService) { }
+  constructor(private router : Router, private profileService : ProfileService ,private messageService: MessageService, private clientService : ClientService) { }
 
   ngOnInit() {
 
+    this.profileService.profile().subscribe(data=>{
+        this.user = data;
+    })
+
     this.client = new Client();
-
-    console.log(Token.getDecodedAccessToken(this.token.accesstoken));
-
-    this.client = new Client();
-    this.productService.getProducts().then(data => this.products = data);
-
-    this.cols = [
-        { field: 'product', header: 'Product' },
-        { field: 'price', header: 'Price' },
-        { field: 'category', header: 'Category' },
-        { field: 'rating', header: 'Reviews' },
-        { field: 'inventoryStatus', header: 'Status' }
-    ];
-
-    this.statuses = [
-        { label: 'INSTOCK', value: 'instock' },
-        { label: 'LOWSTOCK', value: 'lowstock' },
-        { label: 'OUTOFSTOCK', value: 'outofstock' }
-    ];
 }
 
 openNew() {

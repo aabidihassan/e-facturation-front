@@ -34,7 +34,7 @@
     </div>
   </div>
 
-    <p-dialog [(visible)]="display" [style]="{width: '90%', height: '98%'}" header="créer votre propre modéle" [modal]="true" class="p-fluid">
+    <p-dialog [(visible)]="display" [style]="{width: '90%', height: '80%'}" header="créer votre propre modéle" [modal]="true" class="p-fluid">
         <ng-template pTemplate="content">
             <div class="formgrid grid">
                 <div class="field col">
@@ -55,14 +55,6 @@
                         placeholder="Select ">
                     </p-dropdown>
                 </div>
-                <div class="field col-4">
-                    <label for="dropdown">Casse </label>
-                    <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="writhing" [(ngModel)]="modele.casse" ></p-dropdown>
-                </div>
-                <div class="field col-4">
-                    <label for="style Bordure">style Bordure </label>
-                    <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="true" [options]="styles" [(ngModel)]="modele.pl_txt_corps"></p-dropdown>
-                </div>
 
              </div>
 
@@ -76,7 +68,7 @@
                         <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="tailles" [(ngModel)]="modele.taill_txt_corps" ></p-dropdown>
                     </div>
                     <div class="field col-2">
-                        <label for="dropdown">Taille titres entête </label>
+                        <label for="dropdown">Taille Nom d'entreprise </label>
                         <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="tailles" [(ngModel)]="modele.taill_titre_entt" ></p-dropdown>
                     </div>
                     <div class="field col-2">
@@ -84,18 +76,18 @@
                         <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="tailles" [(ngModel)]="modele.taill_txt_entt" ></p-dropdown>
                     </div>
                     <div class="field col-2">
-                        <label for="dropdown">Taille bas </label>
+                        <label for="dropdown">Taille Pied </label>
                         <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="tailles" [(ngModel)]="modele.taill_bas" ></p-dropdown>
                     </div>
                     <div class="field col-2">
-                        <label for="dropdown">Taille Totale </label>
+                        <label for="dropdown">Taille Totale / Reste</label>
                         <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="tailles" [(ngModel)]="modele.taill_total" ></p-dropdown>
                     </div>
                 </div>
-                <div class="formgrid grid">
+                <!-- <div class="formgrid grid">
                     <div class="field col-2">
                         <label for="dropdown">Police titres corps</label>
-                        <!-- <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="polices" [(ngModel)]="modele.pl_titre_corps" optionLabel="police"></p-dropdown> -->
+                        <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="polices" [(ngModel)]="modele.pl_titre_corps" optionLabel="police"></p-dropdown>
 
                         <select class="form-select" aria-label="Default select example" [(ngModel)]="modele.pl_titre_corps"   >
                             <option value="Arial, sans-seri" id="A1" >Arial, sans-serif</option>
@@ -132,7 +124,7 @@
                         <label for="dropdown">Police Totale </label>
                         <p-dropdown placeholder="Select " inputId="dropdown" [autoDisplayFirst]="false" [options]="polices" [(ngModel)]="modele.pl_total" ></p-dropdown>
                     </div>
-                </div>
+                </div> -->
                 <div class="formgrid grid">
                     <div class="field col-2">
                         <label for="Couleur des titres corps">Couleur titres corps </label>
@@ -147,20 +139,19 @@
                         <!-- <p-colorPicker id="Couleur texte corps"  [(ngModel)]="modele.cl_txt_corps"></p-colorPicker> -->
                     </div>
                     <div class="field col-2">
-                        <label for="Couleur des titres entête">Couleur titres entête</label>
+                        <label for="Couleur des titres entête">Couleur nom d'entreprise</label>
                         <input type="color" value="#000000" [(ngModel)]="modele.cl_titre_entt" />
                         <!-- <p-colorPicker id="Couleur des titres entête"  [(ngModel)]="modele.cl_titre_entt" ></p-colorPicker> -->
                     </div>
                     <div class="field col-2">
-                        <label for="CouleurTexteEntête">Couleur texte entête</label>
+                        <label for="CouleurTexteEntête">Couleur texte haut</label>
                         <input type="color" value="#000000" [(ngModel)]="modele.cl_txt_entt" />
                         <!-- <p-colorPicker id="CouleurTexteEntête"  [(ngModel)]="modele.cl_txt_entt"></p-colorPicker> -->
                     </div>
                     <div class="field col-2">
-                        <label for="coleurBas">Couleur  pour bas </label>
-
-                        <input type="color" value="#000000" [(ngModel)]="modele.cl_bas" />
-                        <!-- <p-colorPicker id="coleurBas" [(ngModel)]="modele.cl_bas" ></p-colorPicker> -->
+                        <label for="Coleur templatee" >Coleur  template</label>
+                        <input type="color" value="#000000" [(ngModel)]="modele.cl_template" />
+                        <!-- <p-colorPicker id="Coleur template" [(ngModel)]="modele.cl_template" ></p-colorPicker> -->
                     </div>
                     <div class="field col-2">
                         <label for="coleur Totale" >coleur  pour Totale</label>
@@ -170,20 +161,15 @@
                 </div>
                 <div class="formgrid grid">
                     <div class="field col-2">
-                        <label for="Coleur Bordure" >Coleur  Bordure</label>
-                        <input type="color" value="#000000" [(ngModel)]="modele.cl_bordure" />
-                        <!-- <p-colorPicker id="Coleur Bordure" [(ngModel)]="modele.cl_bordure"  ></p-colorPicker> -->
-                    </div>
-                    <div class="field col-2">
-                        <label for="Coleur templatee" >Coleur  template</label>
-                        <input type="color" value="#000000" [(ngModel)]="modele.cl_template" />
-                        <!-- <p-colorPicker id="Coleur template" [(ngModel)]="modele.cl_template" ></p-colorPicker> -->
-                    </div>
+                        <label for="coleurBas">Couleur pied</label>
 
-                    <div class="field col-8">
-                        <label for="name"> Message Pied de page</label>
-                        <textarea id="pied" pInputTextarea placeholder=" Pied de page...."  required rows="3" cols="20" [(ngModel)]="modele.pied"></textarea>
+                        <input type="color" value="#000000" [(ngModel)]="modele.cl_bas" />
+                        <!-- <p-colorPicker id="coleurBas" [(ngModel)]="modele.cl_bas" ></p-colorPicker> -->
                     </div>
+                    <div class="field col">
+                        <label for="name"> Pied </label>
+                        <textarea id="adress1" pInputTextarea placeholder="Pied...."  required rows="1" cols="20" [(ngModel)]="modele.pied"></textarea>
+                </div>
                 </div>
         </ng-template>
         <ng-template pTemplate="footer">

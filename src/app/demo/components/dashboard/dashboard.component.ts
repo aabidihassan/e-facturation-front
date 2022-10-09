@@ -4,6 +4,8 @@ import { Product } from '../../api/product';
 import { ProductService } from '../../service/product.service';
 import { Subscription } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { Utilisateur } from 'src/app/models/Utilisateur/utilisateur';
+import { ProfileService } from 'src/app/services/auth/Profile/profile.service';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -20,13 +22,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     subscription!: Subscription;
 
-    constructor(private productService: ProductService, public layoutService: LayoutService) {
+    user !: Utilisateur;
+
+    constructor(private productService: ProductService, public layoutService: LayoutService, private profileService : ProfileService) {
         this.subscription = this.layoutService.configUpdate$.subscribe(() => {
             this.initChart();
         });
     }
 
     ngOnInit() {
+
+        this.profileService.profile().subscribe(data=>{
+            this.user = data;
+        },err=>{
+            this.ngOnInit();
+        })
+
         this.initChart();
         this.productService.getProductsSmall().then(data => this.products = data);
 

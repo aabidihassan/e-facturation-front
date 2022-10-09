@@ -2,7 +2,7 @@ import { Entreprise } from "../Entreprise/entreprise";
 
 export class Service {
 
-    public id_service !: string;
+    public id_service !: number;
     public reference !: string;
     public libelle !: string;
     public description !: string;

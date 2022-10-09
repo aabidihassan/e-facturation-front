@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit{
     statuses = [
         { nom_categorie: 'PRODUITS & SERVICES'},
         { nom_categorie: 'PRODUITS' },
-        { nom_categorie: 'SERVICE'}
+        { nom_categorie: 'SERVICES'}
     ];
 
     user !: Utilisateur;
@@ -64,6 +64,8 @@ export class LoginComponent implements OnInit{
     formData : FormData = new FormData();
 
     selectedFiles?: FileList;
+
+    repeted !: string;
 
     constructor(public layoutService: LayoutService, private profileService : ProfileService ,private router : Router ,private countryService: CountryService, private loginService : LoginService) { }
 
