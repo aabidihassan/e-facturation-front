@@ -85,69 +85,78 @@
                 </tr>
             </ng-template>
         </p-table>
+       
+        
     </div>
-    <div class="formgrid grid" style="position: relative;float: right; margin-right: 18%;">
-        <div class="">
-            <h5>Montant HT : </h5>
-
-        </div>
-        <div class="">
-            <h5>{{facture.ht}}</h5>
-        </div>
+    
+        
+         
 
 
-    </div>
-    <br />
-    <div class="formgrid grid" style="position: relative;float: right; margin-right: 18%;">
-        <div class="">
-            <h5>Taxe: </h5>
+</div>    
 
-        </div>
-        <div class="">
-            <h5> {{facture.ttc - facture.ht}}</h5>
-        </div>
+    <div class="card"  style="position: relative;float: right; margin-top:-2%;">
+        <table>
+
+            <tr>
+                <td>
+                    <h6>Montant HT : </h6>
+                </td>
+                <td>
+                    <h6>{{facture.ht}}</h6>
+                    
+                </td>
+    
+            </tr>
+            <tr>
+                <td>
+                    <h6>Taxe: </h6>
+                </td>
+                <td>
+                    <h6>{{facture.ttc - facture.ht}}</h6>
+                    
+                </td>
+    
+            </tr>
+            <tr>
+                <td>
+                    <h6>Total: </h6>
+                </td>
+                <td>
+                    <h6> {{facture.ttc}}</h6>
+                    
+                </td>
+    
+            </tr>
+            <tr>
+                <td>
+                    <h6>Reglements: </h6>
+                </td>
+                <td>
+                    <h6 *ngFor="let reg of facture.reglements"> {{reg.date + ': ' + reg.montant}} </h6>
+                    
+                </td>
+    
+            </tr>
+            <tr>
+                <td>
+                    <h6>Reste: </h6>
+                </td>
+                <td>
+                    <h6> {{facture.reste}}</h6>
+                    
+                </td>
+    
+            </tr>
+        </table>
+
+        
+     </div>
+    
+   
 
 
-    </div>
 
-    <div class="formgrid grid" style="position: relative;float: right; margin-right: 18%;">
-        <div class="">
-            <h5>Total: </h5>
-
-        </div>
-        <div class="">
-            <h5> {{facture.ttc}}</h5>
-        </div>
-
-
-    </div>
-
-    <div class="formgrid grid" style="position: relative;float: right; margin-right: 18%;">
-        <div class="">
-            <h5>Reglements: </h5>
-
-        </div>
-        <div class="">
-            <h5 *ngFor="let reg of facture.reglements"> {{reg.date + ': ' + reg.montant}} </h5>
-        </div>
-
-
-    </div>
-
-    <div class="formgrid grid" style="position: relative;float: right; margin-right: 18%;">
-        <div class="">
-            <h5>Reste: </h5>
-
-        </div>
-        <div class="">
-            <h5> {{facture.reste}}</h5>
-        </div>
-
-
-    </div>
-
-
-</div>
 
 
 

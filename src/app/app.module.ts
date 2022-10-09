@@ -58,11 +58,15 @@ import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { AuthRoutingModule } from './demo/components/auth/auth-routing.module';
 import { FormlayoutRoutingModule } from './demo/components/uikit/formlayout/formlayout-routing.module';
 import { CKEditorModule } from 'ng2-ckeditor';
+import { ProfilComponent } from './demo/components/profil/profil.component';
+import { InfoGeneralComponent } from './demo/components/profil/info-general/info-general.component';
+import { InfoContactComponent } from './demo/components/profil/info-contact/info-contact.component';
+import { MotPasseComponent } from './demo/components/profil/mot-passe/mot-passe.component';
 
 
 @NgModule({
     declarations: [
-        AppComponent, NotfoundComponent, ModelefactureComponent, ClientsComponent, FournisseursComponent, ProduitsComponent, ServicesComponent, FactureComponent, CreationComponent
+        AppComponent, NotfoundComponent, ModelefactureComponent, ClientsComponent, FournisseursComponent, ProduitsComponent, ServicesComponent, FactureComponent, CreationComponent, ProfilComponent, InfoGeneralComponent, InfoContactComponent, MotPasseComponent
     ],
     imports: [
         AppRoutingModule,

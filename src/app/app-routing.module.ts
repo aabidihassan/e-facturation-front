@@ -10,6 +10,10 @@ import { ServicesComponent } from './demo/components/produits&services/services/
 import { AuthGuard } from './guards/auth/auth.guard';
 import { FactureComponent } from './demo/components/devisfacture/facture/facture/facture.component';
 import { CreationComponent } from './demo/components/devisfacture/facture/creation/creation.component';
+import { ProfilComponent } from './demo/components/profil/profil.component';
+import { InfoGeneralComponent } from './demo/components/profil/info-general/info-general.component';
+import { InfoContactComponent } from './demo/components/profil/info-contact/info-contact.component';
+import { MotPasseComponent } from './demo/components/profil/mot-passe/mot-passe.component';
 
 
 @NgModule({
@@ -32,7 +36,15 @@ import { CreationComponent } from './demo/components/devisfacture/facture/creati
                     { path: 'factures', children:[
                         { path: '', component: FactureComponent },
                         { path: 'creation', component: CreationComponent }
-                    ] }
+                    ] },
+                    {  path: 'profil', component: ProfilComponent,
+                    children: [
+                        
+                        { path: 'general', component: InfoGeneralComponent },
+                        { path: 'contact', component: InfoContactComponent },
+                        { path: 'mot-de-passe', component: MotPasseComponent }
+          
+                    ], }
                 ],canActivate:[AuthGuard],
             },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
