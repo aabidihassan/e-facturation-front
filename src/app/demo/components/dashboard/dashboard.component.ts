@@ -6,6 +6,9 @@ import { Subscription } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { Utilisateur } from 'src/app/models/Utilisateur/utilisateur';
 import { ProfileService } from 'src/app/services/auth/Profile/profile.service';
+import { FactureService } from 'src/app/services/Facture/facture.service';
+import { Facture } from 'src/app/models/Facture/facture';
+import { Router } from '@angular/router';
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -23,8 +26,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     subscription!: Subscription;
 
     user !: Utilisateur;
+    factures !: Array<Facture>;
+  factureSelected !: Facture;
 
-    constructor(private productService: ProductService, public layoutService: LayoutService, private profileService : ProfileService) {
+    constructor( private factureService: FactureService ,private router:Router,private productService: ProductService, public layoutService: LayoutService, private profileService : ProfileService) {
         this.subscription = this.layoutService.configUpdate$.subscribe(() => {
             this.initChart();
         });
@@ -45,6 +50,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
             { label: 'Add New', icon: 'pi pi-fw pi-plus' },
             { label: 'Remove', icon: 'pi pi-fw pi-minus' }
         ];
+
+        this.factureService.getFacturesByEntreprise().subscribe(data=>{
+            this.factures = data;
+        },err=>{
+            this.router.navigate(['/'])
+        })
+
+
+
     }
 
     initChart() {

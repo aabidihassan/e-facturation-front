@@ -1,0 +1,56 @@
+<div class="col-12 md:col-12">
+    <div class="card p-fluid">
+        <h5> Info-General</h5>
+        <div class="formgrid grid">
+            <div class="field col-4">
+                <label htmlFor="name1">Nom D'Utilisateur</label>
+                <input pInputText id="name1" type="text" [(ngModel)]="user.username" />
+            </div>
+            <div class="field col-4">
+                <label htmlFor="name1">Pays</label>
+                <input pInputText id="name1" type="text" [(ngModel)]="user.entreprise.pays" />
+            </div>
+            <div class="field col-4">
+                <label for="status">Categoriers</label>
+                <p-dropdown id="categorie"  
+                    placeholder="Select a categorie" [(ngModel)]="user.entreprise.categorie">
+        
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="formgrid grid">
+            <div class="field col-4">
+                <label for="name">Raison Sociale  </label>
+                <input type="text" pInputText id="raisonSociale"  required autofocus placeholder="Ex: SAS/SA/SARL,etc" [(ngModel)]="user.entreprise.raison "  />
+            </div>
+            <div class="field col-4">
+                <label for="name"> TAXE   </label>
+                <div class="p-inputgroup">
+                    
+                    <p-inputNumber id="code_postal" placeholder="20"  [(ngModel)]="user.entreprise.taxe"></p-inputNumber>
+                    <span class="p-inputgroup-addon">%</span>
+                    
+                </div>
+            </div>
+            <div class="field col-4">
+                
+            </div>
+        </div>
+    </div>    
+        
+        
+        <div class="formgrid grid">
+            <div class="field col-6">
+                <button pButton pRipple label="Modifier"  class="p-button-secondary" ></button>
+                    
+            </div>
+            <div class="field col-6">
+                <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-secondary" ></button>
+            </div>
+           
+            </div>
+        
+
+           
+           
+        </div>

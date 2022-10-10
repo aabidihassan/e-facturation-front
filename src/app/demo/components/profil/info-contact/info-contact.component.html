@@ -1,0 +1,52 @@
+<div class="col-12 md:col-12">
+    <div class="card p-fluid">
+        <h5> Info-contact</h5>
+        <div class="formgrid grid">
+
+            <div class="field col-4">
+                <label for="name">Adress 1 <i class=" pi pi-fw pi-map-marker" aria-hidden="true"></i> </label>
+                <textarea id="adress1" pInputTextarea placeholder="Rue ..."  required rows="2" cols="20" [(ngModel)]="user.entreprise.adresse1"></textarea>
+            </div>
+            <div class="field col-4">
+                <label for="name">Adress 2 <i class=" pi pi-fw pi-map-marker" aria-hidden="true" ></i> </label>
+                <textarea id="adress2" pInputTextarea placeholder="Rue ..."  required rows="2" cols="20" [(ngModel)]="user.entreprise.adresse2"></textarea>
+            </div>
+            <div class="field col-4">
+                <label for="name">Code Postale <i class=" pi pi-fw bi bi-mailbox2" aria-hidden="true"></i> </label>
+                <p-inputNumber id="code_postal" placeholder="ZIP Code" [(ngModel)]="user.entreprise.code_postal"></p-inputNumber>
+            </div>
+        
+        </div>
+        <div class="formgrid grid">
+            <div class="field col-4">
+                <label for="name"> Email <i class=" pi pi-fw pi-envelope" aria-hidden="true"></i> </label>
+                <input type="text" pInputText id="Email"  required autofocus placeholder="name@example.com" [(ngModel)]="user.entreprise.email" />
+            </div>
+            <div class="field col-4">
+                <label for="name"> Tél 1 <i class=" pi pi-fw pi-phone" aria-hidden="true"></i> </label>
+                <input type="text" pInputText id="tel1"  required autofocus placeholder="Ex: +212 51234567" [(ngModel)]="user.entreprise.telephone1"/>
+            </div>
+            <div class="field col-4">
+                <label for="name"> Tél 2 <i class=" pi pi-fw pi-phone" aria-hidden="true"></i> </label>
+                <input type="text" pInputText id="tel2"  required autofocus placeholder="Ex: +212 51234567" [(ngModel)]="user.entreprise.telephone2"/>
+            </div>
+
+        </div>
+    </div>    
+        
+        
+        <div class="formgrid grid">
+            <div class="field col-6">
+                <button pButton pRipple label="Modifier"  class="p-button-secondary" ></button>
+                    
+            </div>
+            <div class="field col-6">
+                <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-secondary" ></button>
+            </div>
+           
+            </div>
+        
+
+           
+           
+        </div>
