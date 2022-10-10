@@ -108,6 +108,7 @@
                 </td>
     
             </tr>
+            ---------------------------
             <tr>
                 <td>
                     <h6>Taxe: </h6>
@@ -118,6 +119,7 @@
                 </td>
     
             </tr>
+            ---------------------------
             <tr>
                 <td>
                     <h6>Total: </h6>
@@ -128,16 +130,19 @@
                 </td>
     
             </tr>
+            ---------------------------
             <tr>
-                <td>
-                    <h6>Reglements: </h6>
+            
+                <td style="top: 100%;">
+                    <h6 >Reglements: </h6>
                 </td>
                 <td>
                     <h6 *ngFor="let reg of facture.reglements"> {{reg.date + ': ' + reg.montant}} </h6>
                     
                 </td>
-    
+               
             </tr>
+            ---------------------------
             <tr>
                 <td>
                     <h6>Reste: </h6>
