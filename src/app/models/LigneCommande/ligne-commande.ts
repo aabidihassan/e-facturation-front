@@ -5,8 +5,8 @@ import { Service } from "../Service/service";
 export class LigneCommande {
 
     public id_ligne !: number;
-    public produit !: Produit;
-    public service !: Service;
+    public produit !: Produit | null;
+    public service !: Service | null;
     public qte !: number;
     public ht !: number;
     public ttc !: number;

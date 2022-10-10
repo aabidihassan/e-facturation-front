@@ -3,14 +3,14 @@
         <div class="card" >
             <h4>Liste des Factures</h4>
 
-            <p-dataView #dv [value]="factures" [paginator]="true" [rows]="9" filterBy="name" [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
+            <p-dataView #dv [value]="factures" [paginator]="true" [rows]="9" filterBy="reference,echeance,statut,ttc" [sortField]="sortField" [sortOrder]="sortOrder" layout="grid">
                 <ng-template pTemplate="header">
                     <div class="grid grid-nogutter flex-column md:flex-row justify-content-between">
                         <button pButton pRipple label="Créer"  icon="pi pi-plus" class="p-button p-button-success" (click)="goPlaces()"></button>
-                        <p-dropdown [options]="sortOptions" placeholder="Sort By Price" (onChange)="onSortChange($event)"></p-dropdown>
+                        <p-dropdown [options]="sortOptions" placeholder="Trier par Total" (onChange)="onSortChange($event)"></p-dropdown>
                         <span class="p-input-icon-left mb-2 md:mb-0">
                             <i class="pi pi-search"></i>
-                            <input type="search" pInputText placeholder="Search by Name" (input)="onFilter(dv, $event)">
+                            <input type="search" pInputText placeholder="Rechercher..." (input)="onFilter(dv, $event)">
                         </span>
                         <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
                     </div>

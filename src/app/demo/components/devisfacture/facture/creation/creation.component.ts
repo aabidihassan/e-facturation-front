@@ -16,6 +16,8 @@ import { Generation } from 'src/app/dto/facture/generation/generation';
 import { ModeleService } from 'src/app/services/modele/modele.service';
 import { saveAs } from 'file-saver';
 import { Send } from 'src/app/dto/facture/send/send';
+import { Service } from 'src/app/models/Service/service';
+import { Produit } from 'src/app/models/Produit/produit';
 @Component({
   selector: 'app-creationfacture',
   templateUrl: './creation.component.html',
@@ -111,15 +113,13 @@ export class CreationComponent implements OnInit {
         this.facture.reste = 0;
         this.facture.creation = this.today;
     }
-    else this.facture = history.state.facture;
+    else {this.facture = history.state.facture; console.log(this.facture)}
     if(this.facture.lignes==null) {
         this.facture.lignes = new Array<LigneCommande>;
         this.facture.ht = 0;
         this.facture.ttc = 0;
     }
-    console.log(this.facture)
     this.ligne = new LigneCommande();
-    this.productService.getProducts().then(data => this.products = data);
 
   }
 
@@ -157,6 +157,7 @@ export class CreationComponent implements OnInit {
 
   openPaiement() {
     this.reglement = new Reglement();
+    if(this.facture.reglements==null) this.facture.reglements = new Array<Reglement>;
     this.reglement.date = this.today;
     this.paiementDialog = true;
   }
@@ -167,42 +168,62 @@ export class CreationComponent implements OnInit {
   }
 
   addReglement(){
-    this.facture.reglements.push(this.reglement);
-    let totalReglement = 0;
-    this.facture.reglements.forEach((r)=>{
-        totalReglement += r.montant;
-    })
-    this.facture.reste = (this.facture.ttc-totalReglement);
-    if(totalReglement>=this.facture.ttc) this.facture.statut = 'paye';
-    this.factureService.save(this.facture).subscribe(data=>{
-        this.facture = data;
-    },err=>{
-        alert("Error");
-    })
-    this.paiementDialog = false;
+    if(this.reglement.montant>this.facture.reste){
+        alert("Entrer un montant valide")
+    }else{
+        this.facture.reglements.push(this.reglement);
+        let totalReglement = 0;
+        this.facture.reglements.forEach((r)=>{
+            totalReglement += r.montant;
+        })
+        this.facture.reste = (this.facture.ttc-totalReglement);
+        if(totalReglement=this.facture.ttc) this.facture.statut = 'paye';
+        this.factureService.save(this.facture).subscribe(data=>{
+            this.facture = data;
+        },err=>{
+            alert("Error");
+        })
+        this.paiementDialog = false;
+    }
+
   }
 
   addLigne(){
     switch(this.type){
-        case 'PRODUITS' : this.ligne.ht = (this.ligne.produit.prix*this.ligne.qte); this.ligne.ttc = (this.ligne.ht + (this.ligne.ht*this.user.entreprise.taxe/100)); break;
-        case 'SERVICES' : this.ligne.ht = (this.ligne.service.taux_horaire*this.ligne.qte); this.ligne.ttc = (this.ligne.ht + (this.ligne.ht*this.user.entreprise.taxe/100)); break;
+        case 'PRODUITS' : this.ligne.ht = (this.ligne.produit!.prix*this.ligne.qte); this.ligne.ttc = (this.ligne.ht + (this.ligne.ht*this.user.entreprise.taxe/100)); break;
+        case 'SERVICES' : this.ligne.ht = (this.ligne.service!.taux_horaire*this.ligne.qte); this.ligne.ttc = (this.ligne.ht + (this.ligne.ht*this.user.entreprise.taxe/100)); break;
     }
-    this.ligne.id_ligne = 0;
     this.facture.lignes.push(this.ligne);
-    this.facture.lignes.forEach((l)=>{
-        this.facture.ht+=l.ht;
-        this.facture.ttc+=l.ttc;
-    })
+    this.facture.ht += this.ligne.ht;
+    this.facture.ttc += this.ligne.ttc;
     this.facture.reste+=this.ligne.ttc;
     this.commandeDialog = false;
   }
 
-  sauvegarder(statut : any){
+  remove(ligne:LigneCommande){
+    this.facture.lignes = this.facture.lignes.filter(item => item !== ligne);
+     this.facture.ht -= ligne.ht;
+     this.facture.ttc -= ligne.ttc;
+     this.facture.reste -= ligne.ttc;
+  }
+
+  sauvegarder(statut : any):any{
     this.facture.statut = statut;
-    if(statut=='valide') this.facture.validation = this.today;
-    if(statut != null){
+    if(statut=='valide'){
+        this.facture.lignes.forEach((l)=>{
+            if(l.produit?.quantite!<l.qte){
+                alert("Insuffisant de stock du produit" + l.produit?.libelle);
+                return;
+            }
+        })
+        this.facture.validation = this.today;
+    }
+    if(statut == 'brouillon'){
+        this.facture.echeance = this.datepipe.transform((this.facture.echeance), 'MM/dd/yyyy')!
+    }
+    if(statut!=null){
         this.factureService.save(this.facture).subscribe(data=>{
-        this.facture = data;
+            this.facture = data;
         },err=>{
             alert("Erooor");
         })

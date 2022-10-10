@@ -68,6 +68,11 @@ export class FactureComponent implements OnInit {
 
     this.user = JSON.parse(localStorage.getItem("user")!)
 
+    this.sortOptions = [
+        { label: 'Total du haut au bas', value: '!ttc' },
+        { label: 'Total de bas en haut', value: 'ttc' }
+    ];
+
         this.user.entreprise.modeles.forEach(mod=>{
             this.modeleService.download(mod.file).subscribe(data=>{
                 mod.blob = new Blob([data.body!],

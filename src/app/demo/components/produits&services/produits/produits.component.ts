@@ -48,7 +48,7 @@ export class ProduitsComponent implements OnInit {
 
       token : Token = JSON.parse(localStorage.getItem("token")!);
 
-      user : Utilisateur = JSON.parse(localStorage.getItem("user")!)
+      user !: Utilisateur;
 
       formData !: FormData;
 
@@ -59,8 +59,9 @@ export class ProduitsComponent implements OnInit {
     constructor(private productService: ProductService, private profileService : ProfileService, private sanitizer: DomSanitizer ,private messageService: MessageService, private produitService : ProduitService) { }
 
     ngOnInit() {
-        this.formData = new FormData();
-      this.productService.getProducts().then(data => this.products = data);
+        this.profileService.profile().subscribe(data=>{
+            this.user = data;
+            this.productService.getProducts().then(data => this.products = data);
       this.user.entreprise.produits.forEach((prod)=>{
         this.produitService.logo(prod).subscribe(dt=>{
             this.file = new Blob([dt.body!],
@@ -73,20 +74,9 @@ export class ProduitsComponent implements OnInit {
             alert("Erroor");
         })
       })
+        })
+        this.formData = new FormData();
 
-      this.cols = [
-          { field: 'product', header: 'Product' },
-          { field: 'price', header: 'Price' },
-          { field: 'category', header: 'Category' },
-          { field: 'rating', header: 'Reviews' },
-          { field: 'inventoryStatus', header: 'Status' }
-      ];
-
-      this.statuses = [
-          { label: 'INSTOCK', value: 'instock' },
-          { label: 'LOWSTOCK', value: 'lowstock' },
-          { label: 'OUTOFSTOCK', value: 'outofstock' }
-      ];
   }
 
   openNew() {
