@@ -52,13 +52,15 @@ export class FournisseursComponent implements OnInit {
 
       token : Token = JSON.parse(localStorage.getItem("token")!);
 
-      user : Utilisateur = JSON.parse(localStorage.getItem("user")!)
+      user !: Utilisateur;
 
     constructor(private productService: ProductService, private profileService : ProfileService ,private messageService: MessageService, private fournisseurService : FournisseurService) { }
 
     ngOnInit() {
       console.log(Token.getDecodedAccessToken(this.token.accesstoken));
-      this.productService.getProducts().then(data => this.products = data);
+      this.profileService.profile().subscribe(data=>{
+        this.user = data;
+      })
 
       this.cols = [
           { field: 'product', header: 'Product' },
@@ -129,14 +131,9 @@ export class FournisseursComponent implements OnInit {
 
       this.fournisseurService.save(this.fournisseur).subscribe(data=>{
           this.fournisseur = new Fournisseur();
-          alert("Fournisseur bien ajoute");
           this.submitted = true;
           this.productDialog = false;
-          this.profileService.profile().subscribe(data=>{
-              this.user = data;
-              localStorage.setItem("user", JSON.stringify(this.user))
-              this.ngOnInit();
-          })
+          this.ngOnInit();
 
       },err=>{
           alert("Error, try again");
