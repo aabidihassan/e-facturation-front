@@ -3,7 +3,7 @@ import { Facture } from "../Facture/facture";
 
 export class Client {
 
-    public id_client !: string;
+    public id_client !: number;
     public reference !: string;
     public type !: string;
     public raison !: string;

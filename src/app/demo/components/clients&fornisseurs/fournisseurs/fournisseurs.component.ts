@@ -103,9 +103,9 @@ export class FournisseursComponent implements OnInit {
       this.productDialog = true;
   }
 
-  deleteProduct(product: Product) {
+  deleteProduct(fournisseur: Fournisseur) {
       this.deleteProductDialog = true;
-      this.product = { ...product };
+      this.fournisseur = { ...fournisseur };
   }
 
   confirmDeleteSelected() {
@@ -116,6 +116,9 @@ export class FournisseursComponent implements OnInit {
   }
 
   confirmDelete() {
+    this.fournisseurService.delete(this.fournisseur.id_fournisseur).subscribe(data=>{
+        this.ngOnInit();
+    })
       this.deleteProductDialog = false;
       this.products = this.products.filter(val => val.id !== this.product.id);
       this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });

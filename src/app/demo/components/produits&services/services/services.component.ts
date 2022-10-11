@@ -104,7 +104,7 @@ export class ServicesComponent implements OnInit {
   confirmDelete() {
       this.deleteProductDialog = false;
       this.serviceService.delete(this.service.id_service).subscribe(data=>{
-        alert("Service bien supprime")
+        this.ngOnInit();
       },err=>{
         alert("Erroor")
       })

@@ -93,9 +93,9 @@ openFacture(facture : Facture){
     this.router.navigate(['/factures/creation'], { state: {facture: facture} });
 }
 
-deleteProduct(product: Product) {
+deleteProduct(client: Client) {
     this.deleteProductDialog = true;
-    this.product = { ...product };
+    this.client = { ...client };
 }
 
 confirmDeleteSelected() {
@@ -107,6 +107,9 @@ confirmDeleteSelected() {
 
 confirmDelete() {
     this.deleteProductDialog = false;
+    this.clientService.delete(this.client.id_client).subscribe(data=>{
+        this.ngOnInit();
+    })
     this.products = this.products.filter(val => val.id !== this.product.id);
     this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
     this.product = {};
