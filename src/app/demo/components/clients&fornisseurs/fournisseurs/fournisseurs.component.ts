@@ -89,6 +89,7 @@ export class FournisseursComponent implements OnInit {
 }
 
   openNew() {
+    this.fournisseur = new Fournisseur();
       this.submitted = false;
       this.productDialog = true;
   }

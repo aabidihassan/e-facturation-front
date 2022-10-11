@@ -36,7 +36,6 @@
                         <th pSortableColumn="type"> Type <p-sortIcon field="type"></p-sortIcon></th>
                         <th pSortableColumn="pays">Pays <p-sortIcon field="pays"></p-sortIcon></th>
                         <th pSortableColumn="telephone">Contact <p-sortIcon field="telephone"></p-sortIcon></th>
-                        <th pSortableColumn="factures">les Factures <p-sortIcon field="factures"></p-sortIcon></th>
                         <th></th>
                     </tr>
                 </ng-template>
@@ -63,29 +62,6 @@
                         <td style="width:14%; min-width:8rem;">
                             <span class="p-column-title">Contact</span>
                             {{fournisseur.telephone}}
-                        </td>
-                        <td style="width:14%; min-width: 8rem;"><span class="p-column-title">les Factures</span>
-                            <button type="button" pButton label="Les Factures" (click)="op2.toggle($event)" class="p-button-secondary"></button>
-                            <p-overlayPanel #op2 [showCloseIcon]="true" [style]="{width: '450px'}">
-                                <ng-template pTemplate>
-                                    <p-table [value]="products" selectionMode="single" [(selection)]="selectedProduct" [paginator]="true" [rows]="3" (onRowSelect)="op2.hide()" responsiveLayout="scroll">
-                                        <ng-template pTemplate="header">
-                                            <tr>
-                                                <th pSortableColumn="name">Numéro de Facture<p-sortIcon field="name"></p-sortIcon></th>
-                                                <th>Status </th>
-                                                <th pSortableColumn="price">Totale <p-sortIcon field="price"></p-sortIcon></th>
-                                            </tr>
-                                        </ng-template>
-                                        <ng-template pTemplate="body" let-rowData let-product>
-                                            <tr [pSelectableRow]="rowData">
-                                                <td style="min-width: 10rem;">{{product.name}}</td>
-                                                <td style="min-width: 5rem;"><img src="assets/demo/images/product/{{product.image}}" [alt]="product.image" width="50" class="shadow-2"/></td>
-                                                <td style="min-width: 12rem;">{{formatCurrency(product.price)}}</td>
-                                            </tr>
-                                        </ng-template>
-                                    </p-table>
-                                </ng-template>
-                            </p-overlayPanel>
                         </td>
 
                         <td>

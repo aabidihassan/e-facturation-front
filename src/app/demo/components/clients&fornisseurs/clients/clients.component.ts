@@ -65,6 +65,7 @@ export class ClientsComponent implements OnInit {
 
 openNew() {
     this.submitted = false;
+    this.client= new Client();
     this.productDialog = true;
 }
 

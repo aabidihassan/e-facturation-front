@@ -80,6 +80,7 @@ export class ProduitsComponent implements OnInit {
   }
 
   openNew() {
+    this.produit = new Produit();
       this.submitted = false;
       this.productDialog = true;
   }

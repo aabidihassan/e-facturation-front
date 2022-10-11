@@ -75,6 +75,7 @@ export class ServicesComponent implements OnInit {
   }
 
   openNew() {
+    this.service = new Service();
       this.submitted = false;
       this.productDialog = true;
   }
