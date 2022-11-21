@@ -93,7 +93,60 @@ export class AppMenuComponent implements OnInit {
                     items: [
                         { label: 'List Services', icon: 'pi pi-fw pi-slack', routerLink: ['/services'] }
                     ]
-                }
+                },
+                {
+                label: 'Pages',
+                icon: 'pi pi-fw pi-briefcase',
+                routerLink: ['/pages'],
+                items: [
+                    {
+                        label: 'Landing',
+                        icon: 'pi pi-fw pi-globe',
+                        routerLink: ['/landing']
+                    },
+                    {
+                        label: 'Auth',
+                        icon: 'pi pi-fw pi-user',
+                        items: [
+                            {
+                                label: 'Login',
+                                icon: 'pi pi-fw pi-sign-in',
+                                routerLink: ['/auth/login']
+                            },
+                            {
+                                label: 'Error',
+                                icon: 'pi pi-fw pi-times-circle',
+                                routerLink: ['/auth/error']
+                            },
+                            {
+                                label: 'Access Denied',
+                                icon: 'pi pi-fw pi-lock',
+                                routerLink: ['/auth/access']
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Crud',
+                        icon: 'pi pi-fw pi-pencil',
+                        routerLink: ['/pages/crud']
+                    },
+                    {
+                        label: 'Timeline',
+                        icon: 'pi pi-fw pi-calendar',
+                        routerLink: ['/pages/timeline']
+                    },
+                    {
+                        label: 'Not Found',
+                        icon: 'pi pi-fw pi-exclamation-circle',
+                        routerLink: ['/pages/notfound']
+                    },
+                    {
+                        label: 'Empty',
+                        icon: 'pi pi-fw pi-circle-off',
+                        routerLink: ['/pages/empty']
+                    },
+                ]
+            },
             ];
             break;
             case "PRODUITS & SERVICES" : this.model = [

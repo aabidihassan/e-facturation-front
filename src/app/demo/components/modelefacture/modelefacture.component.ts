@@ -98,7 +98,7 @@ export class ModelefactureComponent implements OnInit {
 
   ngOnInit() {
 
-    this.user = JSON.parse(localStorage.getItem("user")!)
+    this.user = JSON.parse(localStorage.getItem("user")!);
 
     if(this.user.entreprise.modeles != null){
         this.user.entreprise.modeles.forEach(mod=>{

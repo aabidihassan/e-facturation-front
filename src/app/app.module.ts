@@ -62,11 +62,12 @@ import { ProfilComponent } from './demo/components/profil/profil.component';
 import { InfoGeneralComponent } from './demo/components/profil/info-general/info-general.component';
 import { InfoContactComponent } from './demo/components/profil/info-contact/info-contact.component';
 import { MotPasseComponent } from './demo/components/profil/mot-passe/mot-passe.component';
+import { EntreprisesComponent } from './demo/components/admin/entreprises/entreprises/entreprises.component';
 
 
 @NgModule({
     declarations: [
-        AppComponent, NotfoundComponent, ModelefactureComponent, ClientsComponent, FournisseursComponent, ProduitsComponent, ServicesComponent, FactureComponent, CreationComponent, ProfilComponent, InfoGeneralComponent, InfoContactComponent, MotPasseComponent
+        AppComponent, NotfoundComponent, ModelefactureComponent, ClientsComponent, FournisseursComponent, ProduitsComponent, ServicesComponent, FactureComponent, CreationComponent, ProfilComponent, InfoGeneralComponent, InfoContactComponent, MotPasseComponent, EntreprisesComponent
     ],
     imports: [
         AppRoutingModule,

@@ -45,7 +45,7 @@ import { MotPasseComponent } from './demo/components/profil/mot-passe/mot-passe.
                         { path: 'mot-de-passe', component: MotPasseComponent }
 
                     ]}
-                ],canActivate:[AuthGuard],
+                ],canActivate:[AuthGuard],canActivateChild:[AuthGuard]
             },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
 
