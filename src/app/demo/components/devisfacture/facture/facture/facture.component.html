@@ -7,7 +7,8 @@
                 <ng-template pTemplate="header">
                     <div class="grid grid-nogutter flex-column md:flex-row justify-content-between">
                         <button pButton pRipple label="Créer"  icon="pi pi-plus" class="p-button p-button-success" (click)="goPlaces()"></button>
-                        <p-dropdown [options]="sortOptions" placeholder="Trier par Total" (onChange)="onSortChange($event)"></p-dropdown>
+                        <p-dropdown [options]="sortByPrice" placeholder="Trier par Total" (onChange)="onSortByPrice($event)"></p-dropdown>
+                        <p-dropdown [options]="sortByEtat" placeholder="Trier par Etat" (onChange)="onSortByEtat($event)"></p-dropdown>
                         <span class="p-input-icon-left mb-2 md:mb-0">
                             <i class="pi pi-search"></i>
                             <input type="search" pInputText placeholder="Rechercher..." (input)="onFilter(dv, $event)">

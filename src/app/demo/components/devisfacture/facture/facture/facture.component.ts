@@ -18,23 +18,15 @@ import { saveAs } from 'file-saver';
 })
 export class FactureComponent implements OnInit {
 
-  products: Product[] = [];
+  sortByPrice: SelectItem[] = [];
 
-  sortOptions: SelectItem[] = [];
+  sortByEtat: SelectItem[] = [];
 
   sortOrder: number = 0;
 
   sortField: string = '';
 
-  sourceCities: any[] = [];
-
-  targetCities: any[] = [];
-
-  orderCities: any[] = [];
-
   telechargertDialog : boolean = false;
-
-  pdfSrc = "https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf";
 
   carouselResponsiveOptions: any[] = [
     {
@@ -57,10 +49,10 @@ export class FactureComponent implements OnInit {
   user !: Utilisateur;
 
   factures !: Array<Facture>;
+  facturesInitial !: Array<Facture>;
   factureSelected !: Facture;
   generation !: Generation;
   blob !: Blob;
-
 
   constructor(private factureService: FactureService, private router:Router, private modeleService : ModeleService) { }
 
@@ -68,9 +60,17 @@ export class FactureComponent implements OnInit {
 
     this.user = JSON.parse(localStorage.getItem("user")!)
 
-    this.sortOptions = [
+    this.sortByPrice = [
         { label: 'Total du haut au bas', value: '!ttc' },
         { label: 'Total de bas en haut', value: 'ttc' }
+    ];
+
+    this.sortByEtat = [
+        { label: 'Tous', value: 'tous' },
+        { label: 'Brouillant', value: 'brouillon' },
+        { label: 'En cour de paiement', value: 'en cour de paiement' },
+        { label: 'Paye', value: 'paye' },
+        { label: 'Echoue', value: 'echoue' }
     ];
 
         this.user.entreprise.modeles.forEach(mod=>{
@@ -91,12 +91,13 @@ export class FactureComponent implements OnInit {
 
         this.factureService.getFacturesByEntreprise().subscribe(data=>{
             this.factures = data;
+            this.facturesInitial = data;
         },err=>{
             this.router.navigate(['/'])
         })
 }
 
-onSortChange(event: any) {
+onSortByPrice(event: any) {
     const value = event.value;
 
     if (value.indexOf('!') === 0) {
@@ -105,6 +106,24 @@ onSortChange(event: any) {
     } else {
         this.sortOrder = 1;
         this.sortField = value;
+    }
+}
+
+onSortByEtat(event: any) {
+    switch(event.value){
+        case "brouillon" : this.factures = this.facturesInitial.filter(f=>f.statut=="brouillon")
+            break;
+
+        case "en cour de paiement": this.factures = this.facturesInitial.filter(f=>f.statut=="en cour de paiement")
+            break;
+
+        case "paye": this.factures = this.facturesInitial.filter(f=>f.statut=="paye")
+            break;
+
+        case "echoue": this.factures = this.facturesInitial.filter(f=>f.statut=="echoue")
+            break;
+
+        default : this.factures = this.facturesInitial;
     }
 }
 
