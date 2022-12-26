@@ -10,5 +10,10 @@ export class Token {
         } catch(Error) {
           return null;
         }
-      }
+    }
+
+    public static getRole(){
+        const token : Token = JSON.parse(localStorage.getItem("token")!);
+        return Token.getDecodedAccessToken(token.accesstoken).roles[0];
+    }
 }

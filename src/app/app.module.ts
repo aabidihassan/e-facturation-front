@@ -1,5 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
+import {
+    CommonModule,
+    DatePipe,
+    HashLocationStrategy,
+    LocationStrategy,
+} from '@angular/common';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppLayoutModule } from './layout/app.layout.module';
@@ -62,12 +67,29 @@ import { ProfilComponent } from './demo/components/profil/profil.component';
 import { InfoGeneralComponent } from './demo/components/profil/info-general/info-general.component';
 import { InfoContactComponent } from './demo/components/profil/info-contact/info-contact.component';
 import { MotPasseComponent } from './demo/components/profil/mot-passe/mot-passe.component';
-import { EntreprisesComponent } from './demo/components/admin/entreprises/entreprises/entreprises.component';
-
+import { TableDemoRoutingModule } from './demo/components/uikit/table/tabledemo-routing.module';
+import { SliderModule } from 'primeng/slider';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { RippleModule } from 'primeng/ripple';
+import { LoginRoutingModule } from './demo/components/auth/login/login-routing.module';
+import { AdminComponent } from './demo/components/Admin/admin/admin.component';
 
 @NgModule({
     declarations: [
-        AppComponent, NotfoundComponent, ModelefactureComponent, ClientsComponent, FournisseursComponent, ProduitsComponent, ServicesComponent, FactureComponent, CreationComponent, ProfilComponent, InfoGeneralComponent, InfoContactComponent, MotPasseComponent, EntreprisesComponent
+        AppComponent,
+        NotfoundComponent,
+        ModelefactureComponent,
+        ClientsComponent,
+        FournisseursComponent,
+        ProduitsComponent,
+        ServicesComponent,
+        FactureComponent,
+        CreationComponent,
+        ProfilComponent,
+        InfoGeneralComponent,
+        InfoContactComponent,
+        MotPasseComponent,
+        AdminComponent,
     ],
     imports: [
         AppRoutingModule,
@@ -95,28 +117,48 @@ import { EntreprisesComponent } from './demo/components/admin/entreprises/entrep
         ColorPickerModule,
         ConfirmDialogModule,
         ToastModule,
-        ToolbarModule,FileUploadModule,TableModule,RatingModule,RadioButtonModule,InputNumberModule,
+        ToolbarModule,
+        FileUploadModule,
+        TableModule,
+        RatingModule,
+        RadioButtonModule,
+        InputNumberModule,
         OverlayPanelModule,
-        OverlayPanelModule,MenubarModule, AutoCompleteModule, ChipsModule,CalendarModule, InputMaskModule,MultiSelectModule,
+        OverlayPanelModule,
+        MenubarModule,
+        AutoCompleteModule,
+        ChipsModule,
+        CalendarModule,
+        InputMaskModule,
+        MultiSelectModule,
         ReactiveFormsModule,
-        DataViewModule,HttpClientModule,CKEditorModule,
-
-
+        DataViewModule,
+        HttpClientModule,
+        CKEditorModule,
         PasswordModule,
-       CascadeSelectModule,
+        CascadeSelectModule,
         DialogModule,
         AuthRoutingModule,
         FormlayoutRoutingModule,
-
-        ConfirmPopupModule
+        ConfirmPopupModule,
+        TableDemoRoutingModule,
+        SliderModule,
+        ToggleButtonModule,
+        RippleModule,
+        LoginRoutingModule,
     ],
     providers: [
         { provide: LocationStrategy, useClass: HashLocationStrategy },
-        CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService,
-        {provide:HTTP_INTERCEPTORS, useClass:AuthInterceptor, multi:true},
-        DatePipe
+        CountryService,
+        CustomerService,
+        EventService,
+        IconService,
+        NodeService,
+        PhotoService,
+        ProductService,
+        { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+        DatePipe,
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

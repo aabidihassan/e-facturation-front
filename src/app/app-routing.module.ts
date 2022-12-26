@@ -14,6 +14,8 @@ import { ProfilComponent } from './demo/components/profil/profil.component';
 import { InfoGeneralComponent } from './demo/components/profil/info-general/info-general.component';
 import { InfoContactComponent } from './demo/components/profil/info-contact/info-contact.component';
 import { MotPasseComponent } from './demo/components/profil/mot-passe/mot-passe.component';
+import { AdminComponent } from './demo/components/Admin/admin/admin.component';
+import { AdminGuard } from './guards/admin/admin.guard';
 
 
 @NgModule({
@@ -45,8 +47,9 @@ import { MotPasseComponent } from './demo/components/profil/mot-passe/mot-passe.
                         { path: 'mot-de-passe', component: MotPasseComponent }
 
                     ]}
-                ],canActivate:[AuthGuard],canActivateChild:[AuthGuard]
+                ],canActivate:[AuthGuard]
             },
+            { path: 'admin', component: AdminComponent, canActivate:[AdminGuard] },
             { path: 'auth', loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule) },
 
             { path: 'landing', loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule) },

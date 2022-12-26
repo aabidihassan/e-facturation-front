@@ -9,7 +9,7 @@
             <div class="h-full w-full m-0 py-7 px-4"
                 style="border-radius:53px; background: linear-gradient(180deg, var(--surface-50) 38.9%, var(--surface-0));">
                 <div class="text-center mb-5">
-                    <img src="assets/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3">
+                    <img src="assets/demo/images/login/avatar.png" alt="Image" height="50">
                     <div class="text-900 text-3xl font-medium mb-3">Bienvenue</div>
                     <span class="text-600 font-medium">Connectez-vous pour continuer</span>
                 </div>
@@ -23,18 +23,7 @@
                     <p-password id="password1" [(ngModel)]="user.password" placeholder="Password" [toggleMask]="true"
                         styleClass="w-full mb-3"></p-password>
 
-                    <div class="flex align-items-center justify-content-between mb-5">
-                        <div class="flex align-items-center">
-                            <p-checkbox id="rememberme1" [binary]="true" styleClass="mr-2"></p-checkbox>
-                            <label for="rememberme1">Remember me</label>
-                        </div>
-                        <label for="rememberme1">Si vous n'avez pas de compte cliquez
-                            <a class="font-medium no-underline ml-2 text-right cursor-pointer"
-                                style="color: var(--primary-color)" (click)="openNew()"> Ici </a>
-                        </label>
-
-                    </div>
-                    <button pButton pRipple (click)="login()" label="Se connecter" class="w-full p-3 text-xl"></button>
+                    <button pButton pRipple (click)="login()" label="Se connecter" class="w-full p-3 text-xl mt-2"></button>
                 </div>
             </div>
         </div>
@@ -42,119 +31,3 @@
     </div>
 
 </div>
-
-<p-dialog [(visible)]="productDialog" [style]="{width: '60%', height: '90%'}" header="S'inscrire" [modal]="true"
-    class="p-fluid">
-    <ng-template pTemplate="content">
-
-        <div class="formgrid grid">
-            <div class="field col">
-                <label for="name">Nom d'Utilisateur <i class=" pi pi-fw pi-user" aria-hidden="true"></i> </label>
-                <input type="text" pInputText id="name" [(ngModel)]="user.username" required autofocus
-                    placeholder="Nom d'user" [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.username}" />
-                <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.username">Nom required.</small>
-            </div>
-            <div class="field col">
-                <label for="name">Mot De Passe<i class=" pi pi-fw pi-key" aria-hidden="true"></i> </label>
-                <input type="password" pInputText id="name" [(ngModel)]="user.password" required autofocus
-                    [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.password}" />
-                <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.password">Mot de passe required.</small>
-            </div>
-            <div class="field col w-full md:w-10 mx-auto">
-                <label for="name">confirmation de Mot de passe<i class=" pi pi-fw pi-key" aria-hidden="true"></i>
-                </label>
-                <input type="password" pInputText id="name" [(ngModel)]="repeted" required autofocus
-                    [ngClass]="{'ng-invalid ng-dirty' : user.password!=repeted}" />
-                <small class="ng-dirty ng-invalid" style="color: red;" *ngIf="user.password!=repeted">confirmation de Mot de
-                    passe.</small>
-            </div>
-
-        </div>
-
-        <div class="formgrid grid">
-            <div class="field col-4">
-
-                <label for="status">Pays</label>
-                <input type="text" pInputText id="paye" [(ngModel)]="user.entreprise.pays" required autofocus
-                    [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.entreprise.pays}" />
-            </div>
-
-            <div class="field col-4">
-                <label for="status">Categoriers</label>
-                <p-dropdown id="categorie" [options]="statuses" optionLabel="nom_categorie" [(ngModel)]="user.entreprise.categorie"
-                    placeholder="Select a Status">
-
-                    <ng-template let-status pTemplate="status">
-                        <span [class]="'product-badge status-' + status.nom_categorie">{{status.nom_categorie}}</span>
-                    </ng-template>
-                </p-dropdown>
-            </div>
-            <div class="field col-4">
-                <label for="name">Raison Sociale  </label>
-                <input type="text" pInputText id="raisonSociale"  required autofocus placeholder="Ex: SAS/SA/SARL,etc" [(ngModel)]="user.entreprise.raison " />
-            </div>
-        </div>
-
-        <div class="formgrid grid">
-
-            <div class="field col-4">
-                <label for="name">Adress 1 <i class=" pi pi-fw pi-map-marker" aria-hidden="true"></i> </label>
-                <textarea id="adress1" pInputTextarea placeholder="Rue ..."  required rows="2" cols="20" [(ngModel)]="user.entreprise.adresse1"></textarea>
-            </div>
-            <div class="field col-4">
-                <label for="name">Adress 2 <i class=" pi pi-fw pi-map-marker" aria-hidden="true" [(ngModel)]="user.entreprise.adresse2"></i> </label>
-                <textarea id="adress2" pInputTextarea placeholder="Rue ..."  required rows="2" cols="20"></textarea>
-            </div>
-            <div class="field col-4">
-                <label for="name">Code Postale <i class=" pi pi-fw bi bi-mailbox2" aria-hidden="true"></i> </label>
-                <p-inputNumber id="code_postal" placeholder="ZIP Code"[(ngModel)]="user.entreprise.code_postal" ></p-inputNumber>
-            </div>
-
-        </div>
-
-        <div class="formgrid grid">
-            <div class="field col-4">
-                <label for="name"> Email <i class=" pi pi-fw pi-envelope" aria-hidden="true"></i> </label>
-                <input type="text" pInputText id="Email"  required autofocus placeholder="name@example.com" [(ngModel)]="user.entreprise.email"/>
-            </div>
-            <div class="field col-4">
-                <label for="name"> Tél 1 <i class=" pi pi-fw pi-phone" aria-hidden="true"></i> </label>
-                <input type="text" pInputText id="tel1"  required autofocus placeholder="Ex: +212 51234567"[(ngModel)]="user.entreprise.telephone1"/>
-            </div>
-            <div class="field col-4">
-                <label for="name"> Tél 2 <i class=" pi pi-fw pi-phone" aria-hidden="true"></i> </label>
-                <input type="text" pInputText id="tel2"  required autofocus placeholder="Ex: +212 51234567" [(ngModel)]="user.entreprise.telephone2"/>
-            </div>
-
-        </div>
-
-        <div class="formgrid grid">
-
-            <div class="field col-4">
-                <label for="name"> TAXE   </label>
-                <div class="p-inputgroup">
-
-                    <p-inputNumber id="code_postal" placeholder="20" [(ngModel)]="user.entreprise.taxe"></p-inputNumber>
-                    <span class="p-inputgroup-addon">%</span>
-
-                </div>
-            </div>
-
-            <div class="field col-4">
-                <label for="name"> Logo <i class=" pi pi-fw pi-user" aria-hidden="true"></i> </label>
-                <input type="file" accept="image/*" pInputText id="tel2" (change)="selectFile($event)" autofocus />
-            </div>
-
-        </div>
-
-
-
-
-    </ng-template>
-
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Annuler" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-        <button pButton pRipple label="S'inscrire" icon="pi pi-check" class="p-button-text" (click)="register()"></button>
-    </ng-template>
-</p-dialog>
-
